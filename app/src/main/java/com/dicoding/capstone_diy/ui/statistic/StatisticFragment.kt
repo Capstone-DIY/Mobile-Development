@@ -1,4 +1,4 @@
-package com.dicoding.capstone_diy.ui.dashboard
+package com.dicoding.capstone_diy.ui.statistic
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.dicoding.capstone_diy.databinding.FragmentDashboardBinding
+import com.dicoding.capstone_diy.databinding.FragmentStatisticBinding
 
-class DashboardFragment : Fragment() {
+class StatisticFragment : Fragment() {
 
-    private var _binding: FragmentDashboardBinding? = null
+    private var _binding: FragmentStatisticBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class DashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+        val statisticViewModel =
+            ViewModelProvider(this).get(StatisticViewModel::class.java)
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentStatisticBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
+        statisticViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root
