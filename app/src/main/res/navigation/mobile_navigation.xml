@@ -9,7 +9,16 @@
         android:id="@+id/navigation_home"
         android:name="com.dicoding.capstone_diy.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_addDiaryFragment"
+            app:destination="@id/addDiaryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addDiaryFragment"
+        android:name="com.dicoding.capstone_diy.ui.addDiary.AddDiaryFragment"
+        android:label="Add Diary Fragment" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
