@@ -1,36 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    <navigation xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/mobile_navigation"
+        app:startDestination="@+id/navigation_home">
 
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.dicoding.capstone_diy.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        <fragment
+            android:id="@+id/navigation_home"
+            android:name="com.dicoding.capstone_diy.ui.home.HomeFragment"
+            android:label="@string/title_home"
+            tools:layout="@layout/fragment_home" />
 
-    <fragment
-        android:id="@+id/navigation_statistic"
-        android:name="com.dicoding.capstone_diy.ui.statistic.StatisticFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_statistic" />
+        <fragment
+            android:id="@+id/navigation_statistic"
+            android:name="com.dicoding.capstone_diy.ui.statistic.StatisticFragment"
+            android:label="@string/title_dashboard"
+            tools:layout="@layout/fragment_statistic" />
 
-    <fragment
-        android:id="@+id/navigation_profile"
-        android:name="com.dicoding.capstone_diy.ui.profile.ProfileFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_profile">
-        <!-- Tambahkan Action untuk Navigasi -->
-        <action
-            android:id="@+id/action_profile_to_edit_profile"
-            app:destination="@id/navigation_edit_profile" />
-    </fragment>
+        <fragment
+            android:id="@+id/navigation_profile"
+            android:name="com.dicoding.capstone_diy.ui.profile.ProfileFragment"
+            android:label="@string/title_notifications"
+            tools:layout="@layout/fragment_profile">
 
-    <fragment
-        android:id="@+id/navigation_edit_profile"
-        android:name="com.dicoding.capstone_diy.ui.editprofile.EditProfileFragment"
-        android:label="Edit Profile"
-        tools:layout="@layout/fragment_edit_profile" />
-</navigation>
+            <action
+                android:id="@+id/action_navigation_profile_to_editProfileFragment"
+                app:destination="@id/navigation_edit_profile" />
+            <action
+                android:id="@+id/action_navigation_profile_to_favoriteHistoryFragment"
+                app:destination="@id/navigation_favorite_history" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/navigation_edit_profile"
+            android:name="com.dicoding.capstone_diy.ui.editprofile.EditProfileFragment"
+            android:label="Edit Profile"
+            tools:layout="@layout/fragment_edit_profile" />
+
+
+        <fragment
+            android:id="@+id/navigation_favorite_history"
+            android:name="com.dicoding.capstone_diy.ui.favorite.FavoriteHistoryFragment"
+            android:label="Favorite History"
+            tools:layout="@layout/fragment_favorite_history"/>
+
+    </navigation>

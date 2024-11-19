@@ -43,6 +43,12 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         updateButton = view.findViewById(R.id.btnUpdate)
         cancelButton = view.findViewById(R.id.btnCancel)
 
+        val btnBack: ImageView = view.findViewById(R.id.btnBack)
+        btnBack.setOnClickListener {
+            // Kembali ke ProfileFragment
+            findNavController().popBackStack()
+        }
+
         // Listener untuk mengganti gambar
         editImageButton.setOnClickListener {
             openImagePicker()

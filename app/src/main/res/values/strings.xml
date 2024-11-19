@@ -7,6 +7,12 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="dark_mode">Dark Mode</string>
+    <string name="logout">Log Out</string>
+    <string name="logout_confirmation">Are you sure you want to log out?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
         <!-- Array for gender options -->
     <string-array name="gender_options">
         <item>Male</item>

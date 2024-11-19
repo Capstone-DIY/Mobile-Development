@@ -37,10 +37,11 @@ class FavoriteHistoryAdapter :
 
     class FavoriteViewHolder(private val binding: ItemFavoriteHistoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(favorite: FavoriteItem) {
+            binding.tvDate.text = favorite.date
             binding.tvTitle.text = favorite.title
             binding.tvDescription.text = favorite.description
-            binding.tvDate.text = favorite.date
         }
     }
 }
