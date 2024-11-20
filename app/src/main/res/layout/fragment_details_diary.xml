@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <!-- Add Diary Box -->
+    <LinearLayout
+        android:id="@+id/addDiaryBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/back_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/baseline_keyboard_backspace_24"
+            android:contentDescription="Back"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"/>
+
+        <TextView
+            android:id="@+id/diaryText"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:background="@drawable/rounded_button_background"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:layout_marginLeft="60dp"
+            android:text="Details Diary"
+            android:layout_gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <!-- Emotion Tag -->
+    <TextView
+        android:id="@+id/emotionTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/emotion_tag_background"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:text="Emotion"
+        android:layout_marginLeft="8dp"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintTop_toBottomOf="@id/addDiaryBox"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <!-- Full Page CardView Content -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/diaryCard"
+        android:layout_width="match_parent"
+        android:layout_height="643dp"
+        app:layout_constraintTop_toBottomOf="@id/emotionTag"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="#7866D4">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/dot1"
+            android:src="@drawable/group_481820"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginTop="108dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/dot2"
+            android:src="@drawable/group_481820"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginTop="200dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/dot3"
+            android:src="@drawable/group_481820"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginTop="292dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/dot4"
+            android:src="@drawable/group_481820"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginTop="384dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/dot5"
+            android:src="@drawable/group_481820"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginTop="476dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/dot6"
+            android:src="@drawable/group_481820"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginTop="550dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/dot7"
+            android:src="@drawable/group_481820"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="12dp"
+            android:padding="16dp">
+
+            <!-- Text Content Section -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="350dp"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <!-- Date Text -->
+                <TextView
+                    android:id="@+id/dateText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Saturday, 16 November 2024"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif" />
+
+                <!-- Title Text -->
+                <TextView
+                    android:id="@+id/titleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Project"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <!-- Description Text -->
+                <ScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="310dp">
+
+                    <TextView
+                        android:id="@+id/descriptionText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:text="Tolonggg hari ini saya masih juga mengalami stuck pada project course, sangat konyol sekali aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa..."
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif" />
+                </ScrollView>
+            </LinearLayout>
+
+            <!-- Heart Icon -->
+            <ImageView
+                android:id="@+id/heartIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/baseline_favorite_border_24"
+                android:contentDescription="Favorite"
+                app:tint="#ffffff"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
