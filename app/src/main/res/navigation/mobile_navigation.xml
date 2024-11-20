@@ -16,6 +16,16 @@
     </fragment>
 
     <fragment
+        android:id="@+id/detailsDiaryFragment"
+        android:name="com.dicoding.capstone_diy.ui.details.DetailsDiaryFragment"
+        android:label="Details Diary">
+        <argument
+            android:name="diary"
+            app:argType="com.dicoding.capstone_diy.data.Diary" />
+    </fragment>
+
+
+    <fragment
         android:id="@+id/addDiaryFragment"
         android:name="com.dicoding.capstone_diy.ui.addDiary.AddDiaryFragment"
         android:label="Add Diary Fragment" />

@@ -25,24 +25,33 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/diaryCard"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="110dp"
         android:layout_below="@id/emotionTag"
         android:layout_marginTop="16dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="4dp"
         app:cardBackgroundColor="#7866D4">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/group_481820"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:layout_marginLeft="5dp">
 
             <!-- Icon Section -->
             <ImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="13dp"
+                android:layout_marginLeft="2dp"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/icon" />
 
