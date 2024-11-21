@@ -43,8 +43,15 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         updateButton = view.findViewById(R.id.btnUpdate)
         cancelButton = view.findViewById(R.id.btnCancel)
 
+        // Listener untuk tombol back
         val btnBack: ImageView = view.findViewById(R.id.btnBack)
         btnBack.setOnClickListener {
+            // Kembali ke ProfileFragment
+            findNavController().popBackStack()
+        }
+
+        // Listener untuk tombol cancel
+        cancelButton.setOnClickListener {
             // Kembali ke ProfileFragment
             findNavController().popBackStack()
         }
@@ -63,26 +70,17 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         updateButton.setOnClickListener {
             updateProfile()
         }
-
-        // Tombol Cancel
-        cancelButton.setOnClickListener {
-            findNavController().popBackStack()
-        }
     }
 
-    /**
-     * Membuka galeri untuk memilih gambar.
-     */
     private val imagePickerLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
                 selectedImageUri = data?.data
                 selectedImageUri?.let { uri ->
-                    // Menampilkan gambar dengan Glide tanpa mengubah bentuk aslinya
                     Glide.with(this)
                         .load(uri)
-                        .centerCrop() // Menyesuaikan gambar dengan ukuran XML
+                        .centerCrop()
                         .into(profileImage)
                 }
             }
@@ -93,9 +91,6 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         imagePickerLauncher.launch(intent)
     }
 
-    /**
-     * Menampilkan dialog kalender untuk memilih tanggal.
-     */
     private fun showDatePickerDialog() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -105,18 +100,15 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         val datePickerDialog = DatePickerDialog(
             requireContext(),
             { _, selectedYear, selectedMonth, selectedDay ->
-                // Format tanggal menjadi dd-MM-yyyy
                 val formattedDate = String.format("%02d-%02d-%04d", selectedDay, selectedMonth + 1, selectedYear)
-                dateEditText.setText(formattedDate) // Menampilkan tanggal di EditText
+                dateEditText.setText(formattedDate)
             },
             year,
             month,
             day
         )
 
-        // Optional: Membatasi tanggal maksimum ke hari ini
         datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
-
         datePickerDialog.show()
     }
 
@@ -135,10 +127,8 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
             return
         }
 
-        // Tambahkan logika penyimpanan data profil di sini
         println("Profile updated: Name=$name, Date=$date, Gender=$gender, ImageUri=$selectedImageUri")
 
-        // Setelah update, kembali ke fragment sebelumnya
         findNavController().popBackStack()
     }
 }

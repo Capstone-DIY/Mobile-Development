@@ -100,7 +100,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp" />
 
-
     <EditText
         android:id="@+id/etContact"
         android:layout_width="match_parent"
@@ -111,20 +110,6 @@
         android:padding="12dp"
         android:background="@drawable/circle_edit_profile"
         app:layout_constraintTop_toBottomOf="@+id/etDate"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"/>
-
-    <EditText
-        android:id="@+id/etNewPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="New Password"
-        android:inputType="textPassword"
-        android:minHeight="48dp"
-        android:padding="12dp"
-        android:background="@drawable/circle_edit_profile"
-        app:layout_constraintTop_toBottomOf="@+id/etContact"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp"/>
@@ -140,7 +125,7 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etNewPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/etContact" />
 
     <LinearLayout
         android:layout_width="match_parent"
