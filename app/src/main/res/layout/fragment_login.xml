@@ -25,7 +25,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Email"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
         android:minHeight="50dp"
         app:layout_constraintTop_toBottomOf="@id/tvLogo"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp" />
 
-    <!-- Password Field -->
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="0dp"
@@ -50,10 +49,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp" />
 
-    <!-- Remember Me Checkbox -->
-
-    <!-- Login Button -->
-
     <CheckBox
         android:id="@+id/cbRememberMe"
         android:layout_width="wrap_content"
@@ -61,10 +56,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Remember me"
+        android:minHeight="50dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etPassword" />
 
-    <!-- Sign Up Text -->
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="0dp"

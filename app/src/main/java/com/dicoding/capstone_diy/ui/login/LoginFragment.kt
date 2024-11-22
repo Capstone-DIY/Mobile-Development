@@ -78,7 +78,7 @@ class LoginFragment : Fragment() {
             )
         }
         isPasswordVisible = !isPasswordVisible
-        binding.etPassword.setSelection(binding.etPassword.text.length) // Pastikan kursor tetap di akhir teks
+        binding.etPassword.setSelection(binding.etPassword.text.length)
     }
 
     override fun onDestroyView() {

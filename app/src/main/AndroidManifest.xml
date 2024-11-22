@@ -12,16 +12,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CapstoneDIY"
         tools:targetApi="31">
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
+        <!-- OnboardingActivity -->
+        <activity
+            android:name=".OnboardingActivity"
+            android:label="@string/app_name"
+            android:exported="true" >
+            <intent-filter>
+                <!-- Menjadikan OnboardingActivity aktivitas awal -->
+                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- MainActivity -->
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:exported="true" />
+
     </application>
 
 </manifest>
