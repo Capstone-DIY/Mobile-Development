@@ -10,7 +10,6 @@
         android:id="@+id/addDiaryBox"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="#ffffff"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent"
@@ -33,7 +32,7 @@
             android:background="@drawable/rounded_button_background"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:layout_marginLeft="60dp"
+            android:layout_marginLeft="65dp"
             android:text="Details Diary"
             android:layout_gravity="center"
             android:elevation="@dimen/activity_vertical_margin"
@@ -42,21 +41,38 @@
     </LinearLayout>
 
     <!-- Emotion Tag -->
-    <TextView
+    <LinearLayout
         android:id="@+id/emotionTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/emotion_tag_background"
+        android:background="@drawable/circle_emotions_background"
+        android:orientation="horizontal"
         android:paddingHorizontal="8dp"
         android:paddingVertical="4dp"
-        android:text="Emotion"
-        android:layout_marginLeft="8dp"
-        android:textColor="#FFFFFF"
-        android:textSize="12sp"
-        android:fontFamily="sans-serif-medium"
-        app:layout_constraintTop_toBottomOf="@id/addDiaryBox"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.035"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/addDiaryBox">
+
+        <ImageView
+            android:id="@+id/ivLabelIcon"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="4dp"
+            android:src="@drawable/small_circle_favorite_emotion" />
+
+        <TextView
+            android:id="@+id/tvLabelText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="Emotion"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <!-- Full Page CardView Content -->
     <androidx.cardview.widget.CardView

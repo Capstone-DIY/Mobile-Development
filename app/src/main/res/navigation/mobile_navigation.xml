@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/detailsDiaryFragment"
-        android:name="com.dicoding.capstone_diy.ui.details.DetailsDiaryFragment"
+        android:name="com.dicoding.capstone_diy.ui.detailsDiary.DetailsDiaryFragment"
         android:label="Details Diary">
         <argument
             android:name="diary"

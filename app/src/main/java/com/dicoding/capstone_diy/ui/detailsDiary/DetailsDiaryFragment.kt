@@ -1,4 +1,4 @@
-package com.dicoding.capstone_diy.ui.details
+package com.dicoding.capstone_diy.ui.detailsDiary
 
 import android.os.Bundle
 import android.view.LayoutInflater

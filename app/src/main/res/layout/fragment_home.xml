@@ -11,21 +11,11 @@
         android:id="@+id/diaryBox"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="#ffffff"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-        
-        <ImageView
-            android:id="@+id/search_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/baseline_search_24"
-            android:contentDescription="Search"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp" />
 
         <TextView
             android:id="@+id/diaryText"
@@ -35,16 +25,11 @@
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
             android:paddingHorizontal="24dp"
+            android:layout_marginLeft="113dp"
             android:text="Diary"
             android:textColor="#FFFFFF"
-            android:textSize="18sp" />
-    </LinearLayout>
-            android:elevation="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="60dp"
-            android:text="Diary"
-            android:layout_gravity="center"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:elevation="@dimen/activity_vertical_margin" />
     </LinearLayout>
 
     <ImageView
@@ -89,6 +74,8 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="76dp"
+        app:tint="?attr/fabIconColor"
+        android:backgroundTint="@color/nav_gray"
         android:src="@drawable/baseline_add_circle_outline_24"
         android:contentDescription="Tambahkan diary baru"
         app:layout_constraintBottom_toBottomOf="parent"
