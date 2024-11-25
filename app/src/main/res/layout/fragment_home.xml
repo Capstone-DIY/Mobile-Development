@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="76dp"
-        app:tint="?attr/fabIconColor"
+        app:tint="#BB54FD"
         android:backgroundTint="@color/nav_gray"
         android:src="@drawable/baseline_add_circle_outline_24"
         android:contentDescription="Tambahkan diary baru"
