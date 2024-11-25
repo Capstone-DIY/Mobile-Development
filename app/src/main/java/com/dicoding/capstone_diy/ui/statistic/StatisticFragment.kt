@@ -3,6 +3,7 @@ package com.dicoding.capstone_diy.ui.statistic
 import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -87,13 +88,12 @@ class StatisticFragment : Fragment() {
 
             val textView = TextView(requireContext()).apply {
                 text = emotion
-                setTextColor(Color.BLACK)
                 textSize = 12f
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply {
-                    width = 90 // Tetapkan lebar tetap untuk elemen teks
+                    width = 120 // Tetapkan lebar tetap untuk elemen teks
                 }
             }
 
@@ -106,6 +106,10 @@ class StatisticFragment : Fragment() {
     }
 
     private fun setupBarChart() {
+        val typedValue = TypedValue()
+        val theme = requireContext().theme
+        theme.resolveAttribute(R.attr.chartAxisTextColor, typedValue, true)
+        val axisTextColor = typedValue.data
         val visualMaxLevel = 20f // Maksimum sumbu Y
         val days = arrayOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
         val emotions = arrayOf("Anger", "Sadness", "Fear", "Love", "Surprise", "Joy")
@@ -159,7 +163,7 @@ class StatisticFragment : Fragment() {
             xAxis.apply {
                 position = XAxis.XAxisPosition.BOTTOM
                 granularity = 1f
-                textColor = Color.BLACK
+                textColor = axisTextColor
                 textSize = 10f
                 labelRotationAngle = 0f
                 axisMinimum = 0.5f
@@ -175,8 +179,8 @@ class StatisticFragment : Fragment() {
 
             axisLeft.apply {
                 granularity = 5f
-                textColor = Color.BLACK
                 textSize = 12f
+                textColor = axisTextColor
                 axisMinimum = 0f
                 axisMaximum = visualMaxLevel
                 labelCount = 7

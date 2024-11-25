@@ -2,4 +2,5 @@
 <resources>
     <!-- Definisi atribut fabIconColor -->
     <attr name="fabIconColor" format="color" />
+    <attr name="chartAxisTextColor" format="color" />
 </resources>
