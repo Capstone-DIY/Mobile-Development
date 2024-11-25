@@ -61,5 +61,4 @@
             android:name="com.dicoding.capstone_diy.ui.favorite.FavoriteHistoryFragment"
             android:label="Favorite History"
             tools:layout="@layout/fragment_favorite_history"/>
-
 </navigation>
