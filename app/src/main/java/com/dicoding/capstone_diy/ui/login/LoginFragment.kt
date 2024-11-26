@@ -1,5 +1,6 @@
 package com.dicoding.capstone_diy.ui.login
 
+import android.content.Context
 import android.os.Bundle
 import android.text.InputType
 import android.view.LayoutInflater
@@ -29,12 +30,18 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
-                findNavController().navigate(R.id.action_loginFragment_to_navigation_home)
+                if (isValidEmail(email)) {
+                    saveLoginStatus()
+                    findNavController().navigate(R.id.action_loginFragment_to_navigation_home)
+                } else {
+                    Toast.makeText(requireContext(), "Email tidak valid", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 Toast.makeText(requireContext(), "Email dan Password harus diisi", Toast.LENGTH_SHORT).show()
             }
@@ -56,6 +63,7 @@ class LoginFragment : Fragment() {
             false
         }
     }
+
     private fun togglePasswordVisibility() {
         if (isPasswordVisible) {
             // Sembunyikan password dan ubah ikon ke mata tertutup
@@ -79,6 +87,23 @@ class LoginFragment : Fragment() {
         }
         isPasswordVisible = !isPasswordVisible
         binding.etPassword.setSelection(binding.etPassword.text.length)
+    }
+
+    /**
+     * Fungsi untuk menyimpan status login di SharedPreferences
+     */
+    private fun saveLoginStatus() {
+        val sharedPref = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE)
+        sharedPref.edit()
+            .putBoolean("is_logged_in", true)
+            .apply()
+    }
+
+    /**
+     * Fungsi untuk validasi email sederhana
+     */
+    private fun isValidEmail(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     override fun onDestroyView() {

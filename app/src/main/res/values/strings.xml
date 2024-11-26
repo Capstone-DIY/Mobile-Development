@@ -3,4 +3,6 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Statistic</string>
     <string name="title_notifications">Profile</string>
+    <!-- String untuk Onboarding -->
+    <string name="onboarding_title">Welcome to Onboarding</string>
 </resources>
