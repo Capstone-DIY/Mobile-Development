@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Definisi atribut fabIconColor -->
+    <attr name="fabIconColor" format="color" />
+    <attr name="chartAxisTextColor" format="color" />
+</resources>
