@@ -51,6 +51,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.activity)
+    implementation (libs.circleindicator)
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation(libs.mpandroidchart)
     implementation(libs.androidx.legacy.support.v4)
