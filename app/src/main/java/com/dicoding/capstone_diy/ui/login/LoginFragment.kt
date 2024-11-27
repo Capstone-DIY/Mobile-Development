@@ -31,6 +31,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Tombol Login
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
@@ -47,11 +48,12 @@ class LoginFragment : Fragment() {
             }
         }
 
-        // Navigasi ke halaman Sign Up ketika teks "Sign Up" diklik
+        // Navigasi ke halaman Sign Up
         binding.tvSignUp.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
         }
 
+        // Toggle visibility password
         binding.etPassword.setOnTouchListener { _, event ->
             val DRAWABLE_END = 2 // Posisi drawable di ujung kanan
             if (event.action == MotionEvent.ACTION_UP) {
@@ -66,7 +68,6 @@ class LoginFragment : Fragment() {
 
     private fun togglePasswordVisibility() {
         if (isPasswordVisible) {
-            // Sembunyikan password dan ubah ikon ke mata tertutup
             binding.etPassword.inputType =
                 InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             binding.etPassword.setCompoundDrawablesWithIntrinsicBounds(
@@ -76,7 +77,6 @@ class LoginFragment : Fragment() {
                 null
             )
         } else {
-            // Tampilkan password dan ubah ikon ke mata terbuka
             binding.etPassword.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
             binding.etPassword.setCompoundDrawablesWithIntrinsicBounds(
                 null,
@@ -89,9 +89,6 @@ class LoginFragment : Fragment() {
         binding.etPassword.setSelection(binding.etPassword.text.length)
     }
 
-    /**
-     * Fungsi untuk menyimpan status login di SharedPreferences
-     */
     private fun saveLoginStatus() {
         val sharedPref = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE)
         sharedPref.edit()
@@ -99,9 +96,6 @@ class LoginFragment : Fragment() {
             .apply()
     }
 
-    /**
-     * Fungsi untuk validasi email sederhana
-     */
     private fun isValidEmail(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }

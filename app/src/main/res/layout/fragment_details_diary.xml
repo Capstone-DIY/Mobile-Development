@@ -18,8 +18,8 @@
 
         <Button
             android:id="@+id/back_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/baseline_keyboard_backspace_24"
             android:contentDescription="Back"
             android:layout_marginStart="16dp"
@@ -32,7 +32,7 @@
             android:background="@drawable/rounded_button_background"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:layout_marginLeft="65dp"
+            android:layout_marginLeft="59dp"
             android:text="Details Diary"
             android:layout_gravity="center"
             android:elevation="@dimen/activity_vertical_margin"

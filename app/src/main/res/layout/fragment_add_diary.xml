@@ -20,8 +20,8 @@
 
         <Button
             android:id="@+id/back_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/baseline_keyboard_backspace_24"
             android:contentDescription="Back"
             android:layout_marginStart="16dp"

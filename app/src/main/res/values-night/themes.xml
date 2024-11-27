@@ -21,4 +21,19 @@
 
     </style>
 
+    <style name="BottomNavStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">@drawable/bottom_nav_background</item>
+        <item name="itemIconSize">24dp</item>
+        <item name="itemRippleColor">@color/transparent</item>
+        <item name="itemIconTint">@color/selector_tab_icon_dark</item>
+        <item name="itemTextColor">@color/selector_tab_text_dark</item>
+        <item name="android:elevation">8dp</item>
+    </style>
+
+    <style name="BottomNavActiveIndicator">
+        <item name="android:drawable">@drawable/tab_indicator</item>
+        <item name="android:width">50dp</item> <!-- Ukuran sama dengan tab_indicator -->
+        <item name="android:height">10dp</item> <!-- Tinggi setengah lingkaran -->
+    </style>
+
 </resources>

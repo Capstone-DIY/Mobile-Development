@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:gravity="center|top">
+        <shape
+            android:shape="rectangle">
+            <solid android:color="@color/purple_500" /> <!-- Warna indikator -->
+            <corners
+                android:bottomLeftRadius="12dp"
+                android:bottomRightRadius="12dp" /> <!-- Radius bagian atas -->
+            <size
+                android:width="@dimen/tab_indicator_width"
+                android:height="@dimen/tab_indicator_height" /> <!-- Sesuaikan tinggi dan lebar -->
+        </shape>
+
+    </item>
+</layer-list>

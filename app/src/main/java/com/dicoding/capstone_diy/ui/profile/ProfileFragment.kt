@@ -38,6 +38,8 @@ class ProfileFragment : Fragment() {
             requireContext().getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
         val isDarkMode = sharedPreferences.getBoolean("isDarkMode", false)
 
+
+
         // Atur Switch tanpa memicu listener
         isSwitchInitialized = false
         binding.themeSwitch.isChecked = isDarkMode
@@ -82,9 +84,6 @@ class ProfileFragment : Fragment() {
             alertDialog.show()
         }
 
-        binding.btnBack.setOnClickListener {
-            requireActivity().onBackPressed()
-        }
     }
 
     override fun onDestroyView() {

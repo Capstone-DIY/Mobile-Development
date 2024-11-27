@@ -13,17 +13,25 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            val sharedPref = getSharedPreferences("onboarding", MODE_PRIVATE)
-            val isOnboardingSeen = sharedPref.getBoolean("onboarding_seen", false)
+            val sharedPref = getSharedPreferences("user", MODE_PRIVATE)
+            val isLoggedIn = sharedPref.getBoolean("is_logged_in", false)
 
-            if (isOnboardingSeen) {
-                // Jika onboarding sudah dilihat, arahkan ke MainActivity (dan LoginFragment jika belum login)
-                startActivity(Intent(this, MainActivity::class.java))
+            val onboardingPref = getSharedPreferences("onboarding", MODE_PRIVATE)
+            val isOnboardingSeen = onboardingPref.getBoolean("onboarding_seen", false)
+
+            val intent = if (!isOnboardingSeen) {
+                Intent(this, OnboardingActivity::class.java)
+            } else if (!isLoggedIn) {
+                Intent(this, MainActivity::class.java).apply {
+                    putExtra("navigateToLogin", true)
+                }
             } else {
-                // Jika belum, tampilkan OnboardingActivity
-                startActivity(Intent(this, OnboardingActivity::class.java))
+                Intent(this, MainActivity::class.java)
             }
+
+            startActivity(intent)
             finish()
         }, 2000) // Splash screen ditampilkan selama 2 detik
     }
 }
+
