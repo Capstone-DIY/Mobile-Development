@@ -25,10 +25,13 @@ class MainActivity : AppCompatActivity() {
 
         // Sembunyikan BottomNavigationView di LoginFragment
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.loginFragment) {
-                navView.visibility = View.GONE
-            } else {
-                navView.visibility = View.VISIBLE
+            when (destination.id) {
+                R.id.loginFragment, R.id.signUpFragment -> {
+                    navView.visibility = View.GONE
+                }
+                else -> {
+                    navView.visibility = View.VISIBLE
+                }
             }
         }
 
