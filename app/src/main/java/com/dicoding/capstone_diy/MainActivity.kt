@@ -9,6 +9,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.dicoding.capstone_diy.databinding.ActivityMainBinding
 import com.dicoding.capstone_diy.utils.ThemeManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 

@@ -14,11 +14,14 @@ import androidx.navigation.fragment.findNavController
 import com.dicoding.capstone_diy.R
 import com.dicoding.capstone_diy.databinding.FragmentSignUpBinding
 
+import com.google.firebase.auth.FirebaseAuth
+
 class SignUpFragment : Fragment() {
 
     private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var auth: FirebaseAuth
     private var isPasswordVisible = false
     private var isConfirmPasswordVisible = false
 
@@ -33,6 +36,9 @@ class SignUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Inisialisasi FirebaseAuth
+        auth = FirebaseAuth.getInstance()
+
         binding.btnSubmit.setOnClickListener {
             val name = binding.etName.text.toString()
             val email = binding.etEmail.text.toString()
@@ -41,8 +47,7 @@ class SignUpFragment : Fragment() {
             val confirmPassword = binding.etConfirmPassword.text.toString()
 
             if (validateInput(name, email, contact, password, confirmPassword)) {
-                Toast.makeText(requireContext(), "Sign-Up Successful!", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+                registerUser(email, password)
             }
         }
 
@@ -51,26 +56,30 @@ class SignUpFragment : Fragment() {
         }
 
         binding.etPassword.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                val drawableEnd = 2
-                if (event.rawX >= (binding.etPassword.right - binding.etPassword.compoundDrawables[drawableEnd].bounds.width())) {
-                    togglePasswordVisibility(isPasswordField = true)
-                    return@setOnTouchListener true
-                }
-            }
-            false
+            handlePasswordToggle(event, isPasswordField = true)
         }
 
         binding.etConfirmPassword.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                val drawableEnd = 2
-                if (event.rawX >= (binding.etConfirmPassword.right - binding.etConfirmPassword.compoundDrawables[drawableEnd].bounds.width())) {
-                    togglePasswordVisibility(isPasswordField = false)
-                    return@setOnTouchListener true
+            handlePasswordToggle(event, isPasswordField = false)
+        }
+    }
+
+    private fun registerUser(email: String, password: String) {
+        binding.btnSubmit.isEnabled = false // Disable tombol saat proses berjalan
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                binding.btnSubmit.isEnabled = true
+                if (task.isSuccessful) {
+                    Toast.makeText(requireContext(), "Sign-Up Successful!", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Sign-Up Failed: ${task.exception?.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
-            false
-        }
     }
 
     private fun validateInput(
@@ -103,50 +112,47 @@ class SignUpFragment : Fragment() {
         return true
     }
 
-    private fun togglePasswordVisibility(isPasswordField: Boolean) {
-        if (isPasswordField) {
-            if (isPasswordVisible) {
-                binding.etPassword.inputType =
-                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-                binding.etPassword.setCompoundDrawablesWithIntrinsicBounds(
-                    null,
-                    null,
-                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_eye_close),
-                    null
-                )
-            } else {
-                binding.etPassword.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-                binding.etPassword.setCompoundDrawablesWithIntrinsicBounds(
-                    null,
-                    null,
-                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_eye_open),
-                    null
-                )
+    private fun handlePasswordToggle(event: MotionEvent, isPasswordField: Boolean): Boolean {
+        if (event.action == MotionEvent.ACTION_UP) {
+            val drawableEnd = 2
+            val editText = if (isPasswordField) binding.etPassword else binding.etConfirmPassword
+            if (event.rawX >= (editText.right - editText.compoundDrawables[drawableEnd].bounds.width())) {
+                togglePasswordVisibility(isPasswordField)
+                return true
             }
-            isPasswordVisible = !isPasswordVisible
-            binding.etPassword.setSelection(binding.etPassword.text.length)
-        } else {
-            if (isConfirmPasswordVisible) {
-                binding.etConfirmPassword.inputType =
-                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-                binding.etConfirmPassword.setCompoundDrawablesWithIntrinsicBounds(
-                    null,
-                    null,
-                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_eye_close),
-                    null
-                )
-            } else {
-                binding.etConfirmPassword.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-                binding.etConfirmPassword.setCompoundDrawablesWithIntrinsicBounds(
-                    null,
-                    null,
-                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_eye_open),
-                    null
-                )
-            }
-            isConfirmPasswordVisible = !isConfirmPasswordVisible
-            binding.etConfirmPassword.setSelection(binding.etConfirmPassword.text.length)
         }
+        return false
+    }
+
+    private fun togglePasswordVisibility(isPasswordField: Boolean) {
+        val editText = if (isPasswordField) binding.etPassword else binding.etConfirmPassword
+        val isVisible = if (isPasswordField) isPasswordVisible else isConfirmPasswordVisible
+
+        if (isVisible) {
+            editText.inputType =
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            editText.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_eye_close),
+                null
+            )
+        } else {
+            editText.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            editText.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_eye_open),
+                null
+            )
+        }
+
+        if (isPasswordField) {
+            isPasswordVisible = !isPasswordVisible
+        } else {
+            isConfirmPasswordVisible = !isConfirmPasswordVisible
+        }
+        editText.setSelection(editText.text.length)
     }
 
     override fun onDestroyView() {
@@ -154,3 +160,4 @@ class SignUpFragment : Fragment() {
         _binding = null
     }
 }
+

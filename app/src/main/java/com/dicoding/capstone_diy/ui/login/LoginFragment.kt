@@ -13,9 +13,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dicoding.capstone_diy.R
 import com.dicoding.capstone_diy.databinding.FragmentLoginBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginFragment : Fragment() {
 
+    private lateinit var auth: FirebaseAuth
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private var isPasswordVisible = false
@@ -25,37 +27,44 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        auth = FirebaseAuth.getInstance()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Tombol Login
         binding.btnLogin.setOnClickListener {
-            val email = binding.etEmail.text.toString()
-            val password = binding.etPassword.text.toString()
+            val email = binding.etEmail.text.toString().trim()
+            val password = binding.etPassword.text.toString().trim()
 
-            if (email.isNotEmpty() && password.isNotEmpty()) {
-                if (isValidEmail(email)) {
-                    saveLoginStatus()
-                    findNavController().navigate(R.id.action_loginFragment_to_navigation_home)
-                } else {
-                    Toast.makeText(requireContext(), "Email tidak valid", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Toast.makeText(requireContext(), "Email dan Password harus diisi", Toast.LENGTH_SHORT).show()
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(requireContext(), "Email dan password harus diisi", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            if (!isValidEmail(email)) {
+                Toast.makeText(requireContext(), "Email tidak valid", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        saveLoginStatus()
+                        findNavController().navigate(R.id.action_loginFragment_to_navigation_home)
+                    } else {
+                        Toast.makeText(requireContext(), "Login gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
         }
 
-        // Navigasi ke halaman Sign Up
         binding.tvSignUp.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
         }
 
-        // Toggle visibility password
         binding.etPassword.setOnTouchListener { _, event ->
-            val DRAWABLE_END = 2 // Posisi drawable di ujung kanan
+            val DRAWABLE_END = 2
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= (binding.etPassword.right - binding.etPassword.compoundDrawables[DRAWABLE_END].bounds.width())) {
                     togglePasswordVisibility()
@@ -68,8 +77,7 @@ class LoginFragment : Fragment() {
 
     private fun togglePasswordVisibility() {
         if (isPasswordVisible) {
-            binding.etPassword.inputType =
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            binding.etPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             binding.etPassword.setCompoundDrawablesWithIntrinsicBounds(
                 null,
                 null,
@@ -105,3 +113,4 @@ class LoginFragment : Fragment() {
         _binding = null
     }
 }
+

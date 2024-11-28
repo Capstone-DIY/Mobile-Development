@@ -4,6 +4,7 @@ plugins {
     id ("kotlin-parcelize")
     id("kotlin-kapt")
     id("com.google.devtools.ksp") version "1.9.21-1.0.15"
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -58,6 +59,7 @@ dependencies {
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.fragment.ktx)
     implementation (libs.glide)
+    implementation(libs.firebase.auth.ktx)
     annotationProcessor (libs.compiler)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
@@ -65,5 +67,9 @@ dependencies {
     ksp(libs.room.ksp)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation("com.google.firebase:firebase-analytics")
 
 }
