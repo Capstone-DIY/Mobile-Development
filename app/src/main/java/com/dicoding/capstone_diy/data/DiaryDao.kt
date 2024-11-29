@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Delete
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -17,4 +18,7 @@ interface DiaryDao {
 
     @Query("SELECT * FROM diary_table ORDER BY date DESC")
     fun getAllDiaries(): Flow<List<Diary>>
+
+    @Update
+    suspend fun updateDiary(diary: Diary)
 }

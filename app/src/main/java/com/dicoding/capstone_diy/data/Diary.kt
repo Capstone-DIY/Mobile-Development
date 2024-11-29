@@ -11,13 +11,15 @@ data class Diary(
     val id: Int = 0, // Primary key otomatis bertambah
     val date: Long, // Timestamp
     val title: String?,
-    val description: String?
+    val description: String?,
+    val favorited: Boolean = false
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readLong(),
         parcel.readString(),
-        parcel.readString()
+        parcel.readString(),
+        parcel.readByte() != 0.toByte()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -25,6 +27,7 @@ data class Diary(
         parcel.writeLong(date)
         parcel.writeString(title)
         parcel.writeString(description)
+        parcel.writeByte(if (favorited) 1 else 0)
     }
 
     override fun describeContents(): Int {
