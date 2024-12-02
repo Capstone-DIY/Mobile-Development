@@ -6,13 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.dicoding.capstone_diy.R
 import com.dicoding.capstone_diy.data.Diary
 import com.dicoding.capstone_diy.databinding.CardDiaryBinding
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class DiaryAdapter(private val onItemClick: (Diary) -> Unit) :
+class DiaryAdapter(
+                   private val onItemClick: (Diary) -> Unit,
+                   private val onFavoriteClick: (Diary) -> Unit // Tambahkan parameter ini
+) :
     ListAdapter<Diary, DiaryAdapter.DiaryViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiaryViewHolder {
@@ -36,6 +40,17 @@ class DiaryAdapter(private val onItemClick: (Diary) -> Unit) :
             binding.dateText.text = formatTimestamp(diary.date)
             binding.titleText.text = diary.title
             binding.descriptionText.text = diary.description
+
+            // Set ikon favorit berdasarkan status
+            val favoriteIcon = if (diary.favorited) R.drawable.baseline_favorite_24 else R.drawable.baseline_favorite_border_24
+            binding.heartIcon.setImageResource(favoriteIcon)
+
+            // Klik tombol favorit
+            binding.heartIcon.setOnClickListener {
+                val updatedDiary = diary.copy(favorited = !diary.favorited)
+                onFavoriteClick(updatedDiary)
+            }
+
             binding.root.setOnClickListener {
                 onItemClick(diary)
             }

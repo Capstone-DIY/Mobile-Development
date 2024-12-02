@@ -1,6 +1,7 @@
 package com.dicoding.capstone_diy.data
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 
 class DiaryRepository(private val diaryDao: DiaryDao) {
@@ -16,7 +17,15 @@ class DiaryRepository(private val diaryDao: DiaryDao) {
         }
     }
 
+    fun getFavoriteDiaries(): LiveData<List<Diary>> {
+        return diaryDao.getFavorites()
+    }
+
     suspend fun delete(diary: Diary) {
         diaryDao.deleteDiary(diary)
+    }
+
+    suspend fun update(diary: Diary) {
+        diaryDao.updateDiary(diary)
     }
 }

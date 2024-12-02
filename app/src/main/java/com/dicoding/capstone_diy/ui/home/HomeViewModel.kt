@@ -22,4 +22,11 @@ class HomeViewModel(private val repository: DiaryRepository) : ViewModel() {
             }
         }
     }
+
+    fun updateDiary(diary: Diary) {
+        viewModelScope.launch {
+            repository.update(diary)
+        }
+    }
+
 }
