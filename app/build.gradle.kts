@@ -69,7 +69,11 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     //firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
-    implementation("com.google.firebase:firebase-analytics")
+    implementation(libs.firebase.bom)
+    implementation(libs.firebase.analytics)
 
+    //retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
 }
