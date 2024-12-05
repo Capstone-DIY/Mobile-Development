@@ -11,38 +11,41 @@ data class Diary(
     val id: Int = 0, // Primary key otomatis bertambah
     val date: Long, // Timestamp (sama seperti sebelumnya)
     val title: String?,
-    val story: String?, // Mengganti 'description' menjadi 'story'
-    val emotion: String?, // Menambahkan emotion
-    val response: String?, // Menambahkan response
-    val favorited: Boolean, // Menambahkan favorited
-    val createdAt: String?, // Menambahkan created_at dari API
-    val updatedAt: String?, // Menambahkan updated_at dari API
-    val userId: Int? // Menambahkan userId untuk menyesuaikan dengan API
+    // val story: String?, // Mengganti 'description' menjadi 'story'
+//     val emotion: String?, // Menambahkan emotion
+//     val response: String?, // Menambahkan response
+//     val createdAt: String?, // Menambahkan created_at dari API
+//     val updatedAt: String?, // Menambahkan updated_at dari API
+//     val userId: Int? // Menambahkan userId untuk menyesuaikan dengan API
+    val description: String?,
+    val favorited: Boolean = false
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readLong(),
         parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readByte() != 0.toByte(), // untuk 'favorited'
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readInt()
+//         parcel.readString(),
+//         parcel.readString(),
+//         parcel.readString(),
+//         parcel.readString(),
+//         parcel.readString(),
+//         parcel.readInt()
+        parcel.readString()
+        parcel.readByte() != 0.toByte()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
         parcel.writeLong(date)
         parcel.writeString(title)
-        parcel.writeString(story)
-        parcel.writeString(emotion)
-        parcel.writeString(response)
-        parcel.writeByte(if (favorited) 1 else 0) // Menyimpan 'favorited' sebagai byte
-        parcel.writeString(createdAt)
-        parcel.writeString(updatedAt)
-        parcel.writeInt(userId ?: 0) // Menambahkan userId
+//         parcel.writeString(story)
+//         parcel.writeString(emotion)
+//         parcel.writeString(response)
+//         parcel.writeString(createdAt)
+//         parcel.writeString(updatedAt)
+//         parcel.writeInt(userId ?: 0) // Menambahkan userId
+        parcel.writeString(description)
+        parcel.writeByte(if (favorited) 1 else 0)
     }
 
     override fun describeContents(): Int {

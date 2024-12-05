@@ -49,12 +49,17 @@ class HomeFragment : Fragment() {
 
     private fun initRecyclerView() {
         // Inisialisasi Adapter dengan meneruskan fungsi navigasi ke DetailFragment
-        diaryAdapter = DiaryAdapter { diary ->
-            val bundle = Bundle().apply {
-                putParcelable("diary", diary)  // Pastikan Diary implements Parcelable
+        diaryAdapter = DiaryAdapter(
+            onItemClick = { diary ->
+                val bundle = Bundle().apply {
+                    putParcelable("diary", diary)
+                }
+                findNavController().navigate(R.id.detailsDiaryFragment, bundle)
+            },
+            onFavoriteClick = { diary ->
+                homeViewModel.updateDiary(diary) // Panggil fungsi di ViewModel
             }
-            findNavController().navigate(R.id.detailsDiaryFragment, bundle)
-        }
+        )
 
         // Mengamati perubahan data diaries
         homeViewModel.diaries.observe(viewLifecycleOwner, Observer { diaries ->
