@@ -3,36 +3,19 @@ package com.dicoding.capstone_diy.ui.favorite
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.dicoding.capstone_diy.data.Diary
+import com.dicoding.capstone_diy.data.DiaryRepository
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-class FavoriteHistoryViewModel : ViewModel() {
+class FavoriteHistoryViewModel(private val repository: DiaryRepository) : ViewModel() {
 
-    private val _favoriteList = MutableLiveData<List<FavoriteItem>>()
-    val favoriteList: LiveData<List<FavoriteItem>> get() = _favoriteList
+    val favorites = repository.getFavoriteDiaries() // LiveData langsung dari repository
 
-    init {
-        loadFavorites()
-    }
-
-    private fun loadFavorites() {
-        _favoriteList.value = listOf(
-            FavoriteItem(
-                title = "Progress Project",
-                description = "Hore bisa!!",
-                date = "Thursday, 14 November 2024",
-                emotion = "Happy"
-            ),
-            FavoriteItem(
-                title = "Complete Assignment",
-                description = "Finish Math Homework",
-                date = "Wednesday, 13 November 2024",
-                emotion = "Sadness"
-            ),
-            FavoriteItem(
-                title = "Final Presentation",
-                description = "Prepare slides for final presentation.",
-                date = "Tuesday, 12 November 2024",
-                emotion = "Angry"
-            )
-        )
+    fun updateDiary(diary: Diary) {
+        viewModelScope.launch {
+            repository.update(diary) // Untuk memperbarui entri favorit/non-favorit
+        }
     }
 }

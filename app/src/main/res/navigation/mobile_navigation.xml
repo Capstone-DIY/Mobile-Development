@@ -74,7 +74,9 @@
             <action
                 android:id="@+id/action_navigation_profile_to_favoriteHistoryFragment"
                 app:destination="@id/navigation_favorite_history" />
-
+            <action
+                android:id="@+id/action_navigation_profile_to_loginFragment"
+                app:destination="@id/loginFragment" />
         </fragment>
 
         <fragment
@@ -88,4 +90,5 @@
             android:name="com.dicoding.capstone_diy.ui.favorite.FavoriteHistoryFragment"
             android:label="Favorite History"
             tools:layout="@layout/fragment_favorite_history"/>
+
 </navigation>

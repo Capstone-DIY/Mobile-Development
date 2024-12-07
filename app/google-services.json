@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "529780799130",
+    "project_id": "diy-capstone-dev-a1008",
+    "storage_bucket": "diy-capstone-dev-a1008.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:529780799130:android:9b89b5a898593e740d5123",
+        "android_client_info": {
+          "package_name": "com.dicoding.capstone_diy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyButscvJd3k3ZvSnXcZVvVAIwpyhbwv9Q8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

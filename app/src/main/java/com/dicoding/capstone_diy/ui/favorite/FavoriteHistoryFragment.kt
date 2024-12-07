@@ -5,38 +5,66 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dicoding.capstone_diy.R
+import com.dicoding.capstone_diy.data.DiaryRepository
 import com.dicoding.capstone_diy.databinding.FragmentFavoriteHistoryBinding
+import com.dicoding.capstone_diy.ui.home.DiaryAdapter
+import com.dicoding.capstone_diy.data.DiaryDatabase
 
 class FavoriteHistoryFragment : Fragment() {
 
     private var _binding: FragmentFavoriteHistoryBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: FavoriteHistoryViewModel by viewModels()
+
+    private lateinit var diaryAdapter: DiaryAdapter
+    private lateinit var viewModel: FavoriteHistoryViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFavoriteHistoryBinding.inflate(inflater, container, false)
+
+        // Inisialisasi repository dan ViewModel
+        val diaryDao = DiaryDatabase.getDatabase(requireContext()).diaryDao()
+        val repository = DiaryRepository(diaryDao)
+        val factory = FavoriteHistoryViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, factory)[FavoriteHistoryViewModel::class.java]
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Atur RecyclerView
-        val adapter = FavoriteHistoryAdapter()
-        binding.rvFavoriteHistory.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvFavoriteHistory.adapter = adapter
+        // Inisialisasi Adapter
+        diaryAdapter = DiaryAdapter(
+            onItemClick = { diary ->
+                val bundle = Bundle().apply {
+                    putParcelable("diary", diary)
+                }
+                findNavController().navigate(R.id.detailsDiaryFragment, bundle)
+            },
+            onFavoriteClick = { diary ->
+                viewModel.updateDiary(diary)
+            }
+        )
 
-        // Observe data dari ViewModel
-        viewModel.favoriteList.observe(viewLifecycleOwner) { favorites ->
+        // Atur RecyclerView
+        binding.rvFavoriteHistory.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = diaryAdapter
+        }
+
+        // Observe data favorit dari ViewModel
+        viewModel.favorites.observe(viewLifecycleOwner) { favorites ->
             if (favorites.isNotEmpty()) {
                 binding.tvEmptyState.visibility = View.GONE
                 binding.rvFavoriteHistory.visibility = View.VISIBLE
-                adapter.submitList(favorites)
+                diaryAdapter.submitList(favorites)
             } else {
                 binding.tvEmptyState.visibility = View.VISIBLE
                 binding.rvFavoriteHistory.visibility = View.GONE
