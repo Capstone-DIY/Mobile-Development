@@ -7,9 +7,9 @@ data class ProfileResponse(
 )
 
 data class UserData(
-    val name: String,
-    val username: String,
-    val dob: String,
-    val contact_number: String,
-    val gender: String
+    val name: String?,
+    val username: String?,
+    val dob: String?,
+    val contact_number: String?,
+    val gender: String?
 )

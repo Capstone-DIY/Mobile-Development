@@ -27,7 +27,7 @@ class ProfileViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     val userData = response.body()?.data
                     if (userData != null) {
-                        val formattedDob = userData.dob.split("T").firstOrNull() ?: userData.dob
+                        val formattedDob = userData.dob?.split("T")?.firstOrNull() ?: "-"
                         _userProfile.postValue(userData.copy(dob = formattedDob))
                         Log.d("ProfileViewModel", "User Data: $userData")
                     } else {
