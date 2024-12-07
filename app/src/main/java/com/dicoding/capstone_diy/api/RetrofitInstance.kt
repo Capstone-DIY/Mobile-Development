@@ -15,4 +15,6 @@ object RetrofitInstance {
     val userService: UserApiService by lazy {
         retrofit.create(UserApiService::class.java)
     }
+
+//    val apiService: DiaryApiService = retrofit.create(DiaryApiService::class.java)
 }

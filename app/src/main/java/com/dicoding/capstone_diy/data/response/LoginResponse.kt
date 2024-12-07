@@ -4,21 +4,21 @@ import com.google.gson.annotations.SerializedName
 
 data class LoginResponse(
 
-    @field:SerializedName("status_code")
-    val statusCode: Int,
+	@field:SerializedName("status_code")
+	val statusCode: Int? = null,
 
-    @field:SerializedName("data")
-    val data: LoginData,
+	@field:SerializedName("data")
+	val data: Data? = null,
 
-    @field:SerializedName("message")
-    val message: String
+	@field:SerializedName("message")
+	val message: String? = null
 )
 
-data class LoginData(
+data class Data(
 
-    @field:SerializedName("id")
-    val id: Int,
+	@field:SerializedName("firebase_uid")
+	val firebaseUid: String? = null,
 
-    @field:SerializedName("email")
-    val email: String
+	@field:SerializedName("email")
+	val email: String? = null
 )
