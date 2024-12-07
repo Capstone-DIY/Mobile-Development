@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
-        // Sembunyikan BottomNavigationView di LoginFragment
+        // Menyembunyikan BottomNavigationView di LoginFragment dan SignUpFragment
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.loginFragment, R.id.signUpFragment -> {
@@ -44,5 +44,17 @@ class MainActivity : AppCompatActivity() {
             )
         )
         navView.setupWithNavController(navController)
+
+        // Cek Intent extra untuk menavigasi ke HomeFragment atau LoginFragment
+        val navigateToHome = intent.getBooleanExtra("navigateToHome", false)
+        val navigateToLogin = intent.getBooleanExtra("navigateToLogin", false)
+
+        if (navigateToHome) {
+            // Langsung arahkan ke HomeFragment
+            navController.navigate(R.id.navigation_home)
+        } else if (navigateToLogin) {
+            // Langsung arahkan ke LoginFragment
+            navController.navigate(R.id.loginFragment)
+        }
     }
 }
