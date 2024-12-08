@@ -1,5 +1,7 @@
 package com.dicoding.capstone_diy
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         ThemeManager.applyTheme(this) // Terapkan tema sebelum onCreate
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -44,17 +47,20 @@ class MainActivity : AppCompatActivity() {
             )
         )
         navView.setupWithNavController(navController)
+        // Pulihkan fragment terakhir jika Activity dimuat ulang
+        val sharedPref = getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val lastFragment = sharedPref.getInt("lastFragment", R.id.navigation_home) // Default ke Home
 
-        // Cek Intent extra untuk menavigasi ke HomeFragment atau LoginFragment
-        val navigateToHome = intent.getBooleanExtra("navigateToHome", false)
-        val navigateToLogin = intent.getBooleanExtra("navigateToLogin", false)
-
-        if (navigateToHome) {
-            // Langsung arahkan ke HomeFragment
-            navController.navigate(R.id.navigation_home)
-        } else if (navigateToLogin) {
-            // Langsung arahkan ke LoginFragment
-            navController.navigate(R.id.loginFragment)
+        // Navigasikan ke fragment terakhir
+        if (savedInstanceState == null) { // Hanya jika Activity baru dimuat ulang
+            navController.navigate(lastFragment)
+            navView.menu.findItem(lastFragment).isChecked = true
         }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        // Terapkan tema ulang jika terjadi perubahan konfigurasi
+        ThemeManager.applyTheme(this)
     }
 }

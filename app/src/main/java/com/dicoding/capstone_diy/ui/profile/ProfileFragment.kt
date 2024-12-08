@@ -85,7 +85,13 @@ class ProfileFragment : Fragment() {
         binding.themeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isSwitchInitialized) {
                 ThemeManager.saveThemePreference(requireContext(), isChecked)
-                requireActivity().recreate()
+
+                // Simpan fragment aktif sebelum Activity di-recreate
+                val navController = findNavController()
+                val sharedPref = requireContext().getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+                sharedPref.edit().putInt("lastFragment", navController.currentDestination?.id ?: R.id.navigation_home).apply()
+
+                requireActivity().recreate() // Memulai ulang Activity
             }
         }
 

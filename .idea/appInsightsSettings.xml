@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.dicoding.capstone_diy" />
+                  <option name="mobileSdkAppId" value="1:529780799130:android:9b89b5a898593e740d5123" />
+                  <option name="projectId" value="diy-capstone-dev-a1008" />
+                  <option name="projectNumber" value="529780799130" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
