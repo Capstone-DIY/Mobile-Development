@@ -29,4 +29,8 @@ interface DiaryDao {
 
     @Update
     suspend fun updateDiary(diary: Diary)
+
+    @Query("SELECT * FROM diary_table WHERE date BETWEEN :startDate AND :endDate ORDER BY date DESC")
+    suspend fun getDiaryBetweenDates(startDate: Long, endDate: Long): List<Diary>
+
 }

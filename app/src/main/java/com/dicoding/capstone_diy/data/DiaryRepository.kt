@@ -69,8 +69,6 @@ class DiaryRepository(private val diaryDao: DiaryDao) {
     }
 
 
-
-
     suspend fun fetchDiaryById(token: String, diaryId: Int): Result<Diary> {
         return try {
             val response = RetrofitInstance.apiService.getDiaryById("Bearer $token", diaryId)
@@ -145,6 +143,23 @@ class DiaryRepository(private val diaryDao: DiaryDao) {
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    // Tambahkan fungsi baru untuk menghitung statistik emosi
+    suspend fun getEmotionStatisticsForLastWeek(): Map<String, Int> {
+        val oneWeekAgo = System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000
+        val currentDate = System.currentTimeMillis()
+
+        val diaryList = diaryDao.getDiaryBetweenDates(oneWeekAgo, currentDate)
+        if (diaryList.isEmpty()) return emptyMap()
+
+        val emotionFrequency = mutableMapOf<String, Int>()
+        diaryList.forEach { diary ->
+            val emotion = diary.emotion ?: "Neutral"
+            emotionFrequency[emotion] = (emotionFrequency[emotion] ?: 0) + 1
+        }
+
+        return emotionFrequency
     }
 
     suspend fun deleteDiaryFromApi(token: String, id: Int): Result<Unit> {
