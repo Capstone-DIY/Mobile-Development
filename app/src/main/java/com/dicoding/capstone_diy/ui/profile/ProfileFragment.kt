@@ -66,10 +66,21 @@ class ProfileFragment : Fragment() {
         // Observasi error
         profileViewModel.errorMessage.observe(viewLifecycleOwner, Observer { error ->
             error?.let {
-                Toast.makeText(context, "Error: $it", Toast.LENGTH_SHORT).show()
-                Log.e("ProfileFragment", "Error: $it")
+                if (it.contains("Token expired") || it.contains("Token invalid")) {
+                    // Clear token from SharedPreferences
+                    val sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE)
+                    sharedPreferences.edit().remove("firebase_id_token").apply()
+
+                    // Notify user and navigate to login screen
+                    Toast.makeText(context, "Token expired or invalid. Please login again.", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_navigation_profile_to_loginFragment)
+                } else {
+                    // Handle other error messages
+                    Toast.makeText(context, "Error: $it", Toast.LENGTH_SHORT).show()
+                }
             }
         })
+
 
         // Ambil status tema dari SharedPreferences
         val sharedPreferences =

@@ -1,6 +1,8 @@
 package com.dicoding.capstone_diy.ui.detailsDiary
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +28,7 @@ class DetailsDiaryFragment : Fragment() {
     private val detailsDiaryViewModel: DetailsDiaryViewModel by viewModels {
         val diaryDao = DiaryDatabase.getDatabase(requireContext()).diaryDao()
         val repository = DiaryRepository(diaryDao)
-        DetailsDiaryViewModelFactory(repository)
+        DetailsDiaryViewModelFactory(repository, requireContext()) // Passing context here
     }
 
     private var diary: Diary? = null // Simpan diary sebagai properti
@@ -53,7 +55,9 @@ class DetailsDiaryFragment : Fragment() {
         binding.btnDelete.setOnClickListener {
             diary?.let { diary ->
                 detailsDiaryViewModel.deleteDiary(diary) // Panggil fungsi delete di ViewModel
-                findNavController().navigateUp() // Kembali ke halaman sebelumnya setelah delete
+                Handler(Looper.getMainLooper()).postDelayed({
+                    findNavController().navigateUp() // Kembali ke halaman sebelumnya setelah delay
+                }, 2000)
             }
         }
 

@@ -3,6 +3,7 @@ package com.dicoding.capstone_diy
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -56,6 +57,7 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(lastFragment)
             navView.menu.findItem(lastFragment).isChecked = true
         }
+
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

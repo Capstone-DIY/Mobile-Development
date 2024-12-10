@@ -16,5 +16,5 @@ object RetrofitInstance {
         retrofit.create(UserApiService::class.java)
     }
 
-//    val apiService: DiaryApiService = retrofit.create(DiaryApiService::class.java)
+    val apiService: DiaryApiService = retrofit.create(DiaryApiService::class.java)
 }

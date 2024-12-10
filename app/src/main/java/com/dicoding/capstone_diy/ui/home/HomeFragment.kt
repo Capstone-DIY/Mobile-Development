@@ -27,7 +27,7 @@ class HomeFragment : Fragment() {
     private val homeViewModel: HomeViewModel by viewModels {
         val diaryDao = DiaryDatabase.getDatabase(requireContext()).diaryDao()
         val repository = DiaryRepository(diaryDao)
-        HomeViewModelFactory(repository)
+        HomeViewModelFactory(repository, requireContext()) // Passing context here
     }
 
     override fun onCreateView(
@@ -47,8 +47,15 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Memanggil fetchDiariesFromApi() untuk mengambil data dari API
+        homeViewModel.fetchDiariesFromApi()
+    }
+
     private fun initRecyclerView() {
-        // Inisialisasi Adapter dengan meneruskan fungsi navigasi ke DetailFragment
+        // Initialize Adapter with the click listeners
         diaryAdapter = DiaryAdapter(
             onItemClick = { diary ->
                 val bundle = Bundle().apply {
@@ -57,31 +64,35 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(R.id.detailsDiaryFragment, bundle)
             },
             onFavoriteClick = { diary ->
-                homeViewModel.updateDiary(diary) // Panggil fungsi di ViewModel
+                homeViewModel.updateDiary(diary)
             }
         )
 
-        // Mengamati perubahan data diaries
+        // Observe diary data from ViewModel
         homeViewModel.diaries.observe(viewLifecycleOwner, Observer { diaries ->
             if (diaries.isNotEmpty()) {
-                // Menampilkan RecyclerView
                 binding.recyclerView.visibility = View.VISIBLE
                 diaryAdapter.submitList(diaries)
                 binding.addImage.visibility = View.GONE
                 binding.textHome.visibility = View.GONE
+                Log.d("HomeFragment", "Diaries loaded successfully")
             } else {
-                // Menampilkan placeholder jika data kosong
                 binding.recyclerView.visibility = View.GONE
                 binding.addImage.visibility = View.VISIBLE
                 binding.textHome.visibility = View.VISIBLE
+                Log.d("HomeFragment", "No diaries available")
             }
         })
 
-        // Atur RecyclerView
+        // Observe API status for debugging
+        homeViewModel.apiStatus.observe(viewLifecycleOwner, Observer { status ->
+            Log.d("HomeFragment", "API Status: $status")
+        })
+
+        // Setup RecyclerView
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             binding.recyclerView.adapter = diaryAdapter
-
         }
     }
 

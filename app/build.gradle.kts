@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.dicoding.capstone_diy"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"

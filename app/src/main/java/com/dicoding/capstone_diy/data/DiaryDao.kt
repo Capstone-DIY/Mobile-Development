@@ -5,23 +5,27 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Delete
+import androidx.room.OnConflictStrategy
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DiaryDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDiary(diary: Diary)
 
     @Delete
     suspend fun deleteDiary(diary: Diary)
 
+    @Query("SELECT * FROM diary_table WHERE id = :id")
+    suspend fun getDiaryById(id: Int): Diary?
+
     @Query("SELECT * FROM diary_table ORDER BY date DESC")
     fun getAllDiaries(): Flow<List<Diary>>
 
     @Query("SELECT * FROM diary_table WHERE favorited = 1 ORDER BY date DESC")
-    fun getFavorites(): LiveData<List<Diary>>
+    fun getFavorites(): Flow<List<Diary>>
 
     @Update
     suspend fun updateDiary(diary: Diary)

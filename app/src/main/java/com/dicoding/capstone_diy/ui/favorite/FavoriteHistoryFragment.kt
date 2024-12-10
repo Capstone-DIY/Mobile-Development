@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.capstone_diy.R
@@ -13,6 +14,8 @@ import com.dicoding.capstone_diy.data.DiaryRepository
 import com.dicoding.capstone_diy.databinding.FragmentFavoriteHistoryBinding
 import com.dicoding.capstone_diy.ui.home.DiaryAdapter
 import com.dicoding.capstone_diy.data.DiaryDatabase
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class FavoriteHistoryFragment : Fragment() {
 
@@ -59,15 +62,17 @@ class FavoriteHistoryFragment : Fragment() {
             adapter = diaryAdapter
         }
 
-        // Observe data favorit dari ViewModel
-        viewModel.favorites.observe(viewLifecycleOwner) { favorites ->
-            if (favorites.isNotEmpty()) {
-                binding.tvEmptyState.visibility = View.GONE
-                binding.rvFavoriteHistory.visibility = View.VISIBLE
-                diaryAdapter.submitList(favorites)
-            } else {
-                binding.tvEmptyState.visibility = View.VISIBLE
-                binding.rvFavoriteHistory.visibility = View.GONE
+        // Observe data favorit dari ViewModel menggunakan Flow
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.favorites.collectLatest { favorites ->
+                if (favorites.isNotEmpty()) {
+                    binding.tvEmptyState.visibility = View.GONE
+                    binding.rvFavoriteHistory.visibility = View.VISIBLE
+                    diaryAdapter.submitList(favorites)
+                } else {
+                    binding.tvEmptyState.visibility = View.VISIBLE
+                    binding.rvFavoriteHistory.visibility = View.GONE
+                }
             }
         }
 

@@ -12,12 +12,16 @@ data class Diary(
     val date: Long, // Timestamp
     val title: String?,
     val description: String?,
-    val favorited: Boolean = false
+    val emotion: String? = null,  // Added to store emotion
+    val response: String? = null, // Added to store response
+    val favorited: Boolean = false // Added to store if the diary is favorited
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readLong(),
         parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),  // Reading new fields
         parcel.readString(),
         parcel.readByte() != 0.toByte()
     )
@@ -27,6 +31,8 @@ data class Diary(
         parcel.writeLong(date)
         parcel.writeString(title)
         parcel.writeString(description)
+        parcel.writeString(emotion) // Write new fields
+        parcel.writeString(response)
         parcel.writeByte(if (favorited) 1 else 0)
     }
 
@@ -44,3 +50,4 @@ data class Diary(
         }
     }
 }
+

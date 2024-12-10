@@ -1,5 +1,6 @@
 package com.dicoding.capstone_diy.ui.profile
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -21,7 +22,6 @@ class ProfileViewModel : ViewModel() {
     fun fetchUserProfile(token: String) {
         viewModelScope.launch {
             try {
-                // Pass the token in the header of the API request
                 val response = RetrofitInstance.userService.getUserProfile("Bearer $token")
 
                 if (response.isSuccessful) {
@@ -29,24 +29,22 @@ class ProfileViewModel : ViewModel() {
                     if (userData != null) {
                         val formattedDob = userData.dob?.split("T")?.firstOrNull() ?: "-"
                         _userProfile.postValue(userData.copy(dob = formattedDob))
-                        Log.d("ProfileViewModel", "User Data: $userData")
                     } else {
                         _errorMessage.postValue("User profile data is null")
-                        Log.e("ProfileViewModel", "Response data is null: ${response.body()}")
                     }
                 } else {
-                    _errorMessage.postValue("Error: ${response.code()} ${response.message()}")
-                    Log.e(
-                        "ProfileViewModel",
-                        "Error Response: ${response.code()} ${response.message()} ${response.errorBody()?.string()}"
-                    )
+                    if (response.code() == 403) {
+                        _errorMessage.postValue("Token expired or invalid. Please login again.")
+                    } else {
+                        _errorMessage.postValue("Error: ${response.code()} ${response.message()}")
+                    }
                 }
             } catch (e: Exception) {
                 _errorMessage.postValue("Failed to fetch user data: ${e.localizedMessage}")
-                Log.e("ProfileViewModel", "Exception: ${e.localizedMessage}", e)
             }
         }
     }
+
 
 
     fun getToken(context: Context): String? {

@@ -1,8 +1,6 @@
 package com.dicoding.capstone_diy.ui.addDiary
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,24 +12,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.dicoding.capstone_diy.R
-import com.dicoding.capstone_diy.data.Diary
 import com.dicoding.capstone_diy.data.DiaryDatabase
 import com.dicoding.capstone_diy.data.DiaryRepository
-import java.util.Calendar
 
 class AddDiaryFragment : Fragment() {
 
     private lateinit var repository: DiaryRepository
 
-    // Inisialisasi ViewModel menggunakan factory yang dibuat secara manual
     private val addDiaryViewModel: AddDiaryViewModel by viewModels {
-        AddDiaryViewModelFactory(repository)
+        AddDiaryViewModelFactory(requireContext()) // Pass the context here
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Inisialisasi Database dan Repository
         val diaryDao = DiaryDatabase.getDatabase(requireContext()).diaryDao()
         repository = DiaryRepository(diaryDao)
     }
@@ -52,7 +45,6 @@ class AddDiaryFragment : Fragment() {
         val backButton = view.findViewById<View>(R.id.back_icon)
         val dateTextView = view.findViewById<TextView>(R.id.dateTextView)
 
-        // Format timestamp sekarang ke hari dan tanggal
         val currentTimestamp = System.currentTimeMillis()
         dateTextView.text = formatTimestamp(currentTimestamp)
 
@@ -65,20 +57,19 @@ class AddDiaryFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            // Membuat objek Diary
-            val diary = Diary(
-                id = 0, // Biarkan Room mengatur ID otomatis
-                date = currentTimestamp,
+            addDiaryViewModel.insertDiary(
                 title = title,
-                description = story
+                story = story,
+                onSuccess = {
+                    Toast.makeText(context, "Diary added successfully!", Toast.LENGTH_SHORT).show()
+                    findNavController().popBackStack()
+                },
+                onError = { errorMessage ->
+                    Toast.makeText(context, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
+                }
             )
-
-            // Simpan ke database melalui ViewModel
-            addDiaryViewModel.insertDiary(diary)
-
-            Toast.makeText(context, "Diary added!", Toast.LENGTH_SHORT).show()
-            findNavController().popBackStack()
         }
+
 
         backButton.setOnClickListener {
             findNavController().popBackStack()

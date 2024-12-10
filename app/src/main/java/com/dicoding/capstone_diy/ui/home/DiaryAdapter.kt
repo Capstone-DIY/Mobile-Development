@@ -36,7 +36,8 @@ class DiaryAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(diary: Diary) {
-            Log.d("DiaryAdapter", "Diary title: ${diary.title}, Date: ${diary.date}, Description: ${diary.description}")
+            Log.d("DiaryAdapter", "Emotion: ${diary.emotion} Diary title: ${diary.title}, Date: ${diary.date}, Description: ${diary.description}")
+            binding.tvLabelText.text = diary.emotion
             binding.dateText.text = formatTimestamp(diary.date)
             binding.titleText.text = diary.title
             binding.descriptionText.text = diary.description
