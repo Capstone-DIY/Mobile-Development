@@ -62,15 +62,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EditProfileBox" />
 
-    <ImageView
-        android:id="@+id/btnEditImage"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:contentDescription="Edit Profile Image"
-        android:src="@drawable/ic_gambar_editprofile"
-        app:layout_constraintBottom_toBottomOf="@id/profileImage"
-        app:layout_constraintEnd_toEndOf="@id/profileImage" />
-
     <EditText
         android:id="@+id/etName"
         android:layout_width="match_parent"

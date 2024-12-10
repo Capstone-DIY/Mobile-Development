@@ -23,6 +23,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     private lateinit var genderSpinner: Spinner
     private lateinit var updateButton: Button
     private lateinit var cancelButton: Button
+    private lateinit var backButton: ImageView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,9 +36,15 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         genderSpinner = view.findViewById(R.id.spinnerGender)
         updateButton = view.findViewById(R.id.btnUpdate)
         cancelButton = view.findViewById(R.id.btnCancel)
+        backButton = view.findViewById(R.id.btnBack)
 
         // Listener tombol cancel
         cancelButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        // Listener tombol cancel
+        backButton.setOnClickListener {
             findNavController().popBackStack()
         }
 

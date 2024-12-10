@@ -49,10 +49,14 @@ class SignUpFragment : Fragment() {
             val password = binding.etPassword.text.toString()
             val confirmPassword = binding.etConfirmPassword.text.toString()
 
+
             if (validateInput(email, password, confirmPassword, contactNumber)) {
                 Log.d("SignUpFragment", "Valid input, attempting to register user")
                 signUpViewModel.registerUser(name, email, password, contactNumber)
             }
+        }
+        binding.btnCancel.setOnClickListener{
+            findNavController().popBackStack()
         }
 
         signUpViewModel.registerResult.observe(viewLifecycleOwner, Observer { result ->
@@ -81,12 +85,29 @@ class SignUpFragment : Fragment() {
             }
             false
         }
+        binding.etConfirmPassword.setOnTouchListener { _, event ->
+            val DRAWABLE_END = 2
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (event.rawX >= (binding.etConfirmPassword.right - binding.etConfirmPassword.compoundDrawables[DRAWABLE_END].bounds.width())) {
+                    togglePasswordVisibility()
+                    return@setOnTouchListener true
+                }
+            }
+            false
+        }
     }
 
     private fun togglePasswordVisibility() {
         if (isPasswordVisible) {
             binding.etPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             binding.etPassword.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_eye_close),
+                null
+            )
+            binding.etConfirmPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            binding.etConfirmPassword.setCompoundDrawablesWithIntrinsicBounds(
                 null,
                 null,
                 ContextCompat.getDrawable(requireContext(), R.drawable.ic_eye_close),
@@ -100,9 +121,17 @@ class SignUpFragment : Fragment() {
                 ContextCompat.getDrawable(requireContext(), R.drawable.ic_eye_open),
                 null
             )
+            binding.etConfirmPassword.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            binding.etConfirmPassword.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_eye_open),
+                null
+            )
         }
         isPasswordVisible = !isPasswordVisible
         binding.etPassword.setSelection(binding.etPassword.text.length)
+        binding.etConfirmPassword.setSelection(binding.etConfirmPassword.text.length)
     }
 
     private fun validateInput(
