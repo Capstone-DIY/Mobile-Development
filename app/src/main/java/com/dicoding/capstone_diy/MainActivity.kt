@@ -49,14 +49,24 @@ class MainActivity : AppCompatActivity() {
         )
         navView.setupWithNavController(navController)
         // Pulihkan fragment terakhir jika Activity dimuat ulang
-        val sharedPref = getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
-        val lastFragment = sharedPref.getInt("lastFragment", R.id.navigation_home) // Default ke Home
+//        val sharedPref = getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+//        val lastFragment = sharedPref.getInt("lastFragment", R.id.navigation_home) // Default ke Home
+        val sharedPreff = getSharedPreferences("user", Context.MODE_PRIVATE)
+        val isLoggedIn = sharedPreff.getBoolean("is_logged_in", false)
+        Log.d("MainActivity", "isLoggedIn: $isLoggedIn")
+
 
         // Navigasikan ke fragment terakhir
-        if (savedInstanceState == null) { // Hanya jika Activity baru dimuat ulang
-            navController.navigate(lastFragment)
-            navView.menu.findItem(lastFragment).isChecked = true
+        if (savedInstanceState == null) {
+            if (isLoggedIn) {
+//                navController.navigate(lastFragment)
+//                navView.menu.findItem(lastFragment).isChecked = true
+                navController.navigate(R.id.navigation_home)
+            } else {
+                navController.navigate(R.id.loginFragment)
+            }
         }
+
 
     }
 
