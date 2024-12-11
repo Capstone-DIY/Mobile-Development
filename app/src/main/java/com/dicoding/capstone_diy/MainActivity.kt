@@ -52,29 +52,51 @@ class MainActivity : AppCompatActivity() {
 
 // Listener untuk navigasi manual dengan animasi
         navView.setOnItemSelectedListener { menuItem ->
-            val navOptions = NavOptions.Builder()
-                .setEnterAnim(R.anim.slide_in_right)
-                .setExitAnim(R.anim.slide_out_left)
-                .setPopEnterAnim(R.anim.slide_in_left)
-                .setPopExitAnim(R.anim.slide_out_right)
-                .build()
+            val currentDestination = navController.currentDestination?.id
+            val targetDestination = when (menuItem.itemId) {
+                R.id.navigation_home -> R.id.navigation_home
+                R.id.navigation_statistic -> R.id.navigation_statistic
+                R.id.navigation_profile -> R.id.navigation_profile
+                else -> null
+            }
 
-            when (menuItem.itemId) {
-                R.id.navigation_home -> {
-                    navController.navigate(R.id.navigation_home, null, navOptions)
-                    true
+            if (targetDestination != null && targetDestination != currentDestination) {
+                val navOptions = when {
+                    // Home ke Statistic atau Statistic ke Profile: geser kiri
+                    (currentDestination == R.id.navigation_home && targetDestination == R.id.navigation_statistic) ||
+                            (currentDestination == R.id.navigation_statistic && targetDestination == R.id.navigation_profile) ||
+                                (currentDestination == R.id.navigation_home && targetDestination == R.id.navigation_profile)-> {
+                        NavOptions.Builder()
+                            .setEnterAnim(R.anim.slide_in_right)
+                            .setExitAnim(R.anim.slide_out_left)
+                            .setPopEnterAnim(R.anim.slide_in_left)
+                            .setPopExitAnim(R.anim.slide_out_right)
+                            .build()
+                    }
+                    // Statistic ke Home atau Profile ke Statistic: geser kanan
+                    (currentDestination == R.id.navigation_statistic && targetDestination == R.id.navigation_home) ||
+                            (currentDestination == R.id.navigation_profile && targetDestination == R.id.navigation_statistic) ||
+                                (currentDestination == R.id.navigation_profile && targetDestination == R.id.navigation_home)-> {
+                        NavOptions.Builder()
+                            .setEnterAnim(R.anim.slide_in_left)
+                            .setExitAnim(R.anim.slide_out_right)
+                            .setPopEnterAnim(R.anim.slide_in_right)
+                            .setPopExitAnim(R.anim.slide_out_left)
+                            .build()
+                    }
+                    else -> null
                 }
-                R.id.navigation_statistic -> {
-                    navController.navigate(R.id.navigation_statistic, null, navOptions)
-                    true
+
+                if (navOptions != null) {
+                    navController.navigate(targetDestination, null, navOptions)
                 }
-                R.id.navigation_profile -> {
-                    navController.navigate(R.id.navigation_profile, null, navOptions)
-                    true
-                }
-                else -> false
+                true
+            } else {
+                false
             }
         }
+
+
 
         // Pulihkan fragment terakhir jika Activity dimuat ulang
 //        val sharedPref = getSharedPreferences("app_preferences", Context.MODE_PRIVATE)

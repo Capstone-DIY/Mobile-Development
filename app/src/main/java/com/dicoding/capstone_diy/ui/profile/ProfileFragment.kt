@@ -14,6 +14,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.dicoding.capstone_diy.R
+import com.dicoding.capstone_diy.data.DiaryDatabase
+import com.dicoding.capstone_diy.data.DiaryRepository
 import com.dicoding.capstone_diy.databinding.FragmentProfileBinding
 import com.dicoding.capstone_diy.utils.ThemeManager
 import com.google.firebase.auth.FirebaseAuth
@@ -23,7 +25,13 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private var isSwitchInitialized = false
-    private val profileViewModel: ProfileViewModel by viewModels()
+    private val profileViewModel: ProfileViewModel by viewModels {
+        val diaryDao = DiaryDatabase.getDatabase(requireContext()).diaryDao()
+        val repository = DiaryRepository(diaryDao)
+        ProfileViewModelFactory(repository) // Tidak perlu passing context
+    }
+
+
     private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
@@ -67,6 +75,8 @@ class ProfileFragment : Fragment() {
         profileViewModel.errorMessage.observe(viewLifecycleOwner, Observer { error ->
             error?.let {
                 if (it.contains("Token expired") || it.contains("Token invalid")) {
+                    profileViewModel.deleteAllDiaries()
+
                     // Clear token from SharedPreferences
                     val sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE)
                     sharedPreferences.edit().remove("firebase_id_token").apply()
@@ -128,6 +138,7 @@ class ProfileFragment : Fragment() {
             alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
             dialogView.findViewById<Button>(R.id.btnYes).setOnClickListener {
+                profileViewModel.deleteAllDiaries()
                 // Logout dari Firebase
                 auth.signOut()
 

@@ -51,7 +51,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Memanggil fetchDiariesFromApi() untuk mengambil data dari API
-//        homeViewModel.fetchDiariesFromApi()
+        homeViewModel.fetchDiariesFromApi()
         homeViewModel.isTokenExpired.observe(viewLifecycleOwner, Observer { isExpired ->
             if (isExpired) {
                 Log.e("HomeFragment", "Token expired, navigating to login")

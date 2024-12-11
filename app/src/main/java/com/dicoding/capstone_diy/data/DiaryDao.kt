@@ -35,4 +35,8 @@ interface DiaryDao {
 
     @Query("SELECT * FROM diary_table WHERE date >= :lastWeekDate ORDER BY date DESC")
     suspend fun getLastWeekEntries(lastWeekDate: Long): List<Diary>
+
+    @Query("DELETE FROM diary_table")
+    suspend fun deleteAll()
+
 }

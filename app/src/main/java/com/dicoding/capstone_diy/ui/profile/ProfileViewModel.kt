@@ -8,16 +8,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dicoding.capstone_diy.api.RetrofitInstance
+import com.dicoding.capstone_diy.data.DiaryRepository
 import com.dicoding.capstone_diy.data.response.UserData
 import kotlinx.coroutines.launch
 
-class ProfileViewModel : ViewModel() {
+class ProfileViewModel(private val repository: DiaryRepository) : ViewModel() {
 
     private val _userProfile = MutableLiveData<UserData?>()
     val userProfile: LiveData<UserData?> = _userProfile
 
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
+
+    private val _successMessage = MutableLiveData<String?>() // Added success message
+    val successMessage: LiveData<String?> = _successMessage
 
     fun fetchUserProfile(token: String) {
         viewModelScope.launch {
@@ -46,6 +50,20 @@ class ProfileViewModel : ViewModel() {
     }
 
 
+    fun deleteAllDiaries() {
+        viewModelScope.launch {
+            try {
+                val result = repository.deleteAllDiaries() // Assuming this function handles deletion in repository
+                if (result) {
+                    _successMessage.postValue("All diaries have been successfully deleted.")
+                } else {
+                    _errorMessage.postValue("Failed to delete all diaries.")
+                }
+            } catch (e: Exception) {
+                _errorMessage.postValue("Failed to delete all diaries: ${e.message}")
+            }
+        }
+    }
 
     fun getToken(context: Context): String? {
         val sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)

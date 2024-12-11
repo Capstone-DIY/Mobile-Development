@@ -247,6 +247,15 @@ class DiaryRepository(private val diaryDao: DiaryDao) {
         return null
     }
 
+    suspend fun deleteAllDiaries(): Boolean {
+        return try {
+            diaryDao.deleteAll() // Assuming this will delete all diaries from the database
+            true // Return true if the deletion is successful
+        } catch (e: Exception) {
+            Log.e("DiaryRepository", "Failed to delete all diaries: ${e.message}")
+            false // Return false if an error occurs
+        }
+    }
 
     suspend fun insert(diary: Diary) {
         diaryDao.insertDiary(diary)
