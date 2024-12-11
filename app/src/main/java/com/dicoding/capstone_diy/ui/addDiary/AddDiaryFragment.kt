@@ -39,6 +39,8 @@ class AddDiaryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        requireActivity().findViewById<View>(R.id.nav_view).visibility = View.GONE
+
         val titleField = view.findViewById<EditText>(R.id.titleField)
         val storyField = view.findViewById<EditText>(R.id.storyField)
         val saveButton = view.findViewById<Button>(R.id.saveButton)

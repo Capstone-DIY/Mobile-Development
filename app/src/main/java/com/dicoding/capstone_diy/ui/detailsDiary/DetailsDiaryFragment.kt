@@ -31,6 +31,7 @@ class DetailsDiaryFragment : Fragment() {
         DetailsDiaryViewModelFactory(repository, requireContext()) // Passing context here
     }
 
+
     private var diary: Diary? = null // Simpan diary sebagai properti
 
     override fun onCreateView(
@@ -62,6 +63,13 @@ class DetailsDiaryFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Sembunyikan Bottom Navigation View
+        requireActivity().findViewById<View>(R.id.nav_view).visibility = View.GONE
     }
 
     private fun updateUI(diary: Diary) {

@@ -38,6 +38,8 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         cancelButton = view.findViewById(R.id.btnCancel)
         backButton = view.findViewById(R.id.btnBack)
 
+        requireActivity().findViewById<View>(R.id.nav_view).visibility = View.GONE
+
         // Listener tombol cancel
         cancelButton.setOnClickListener {
             findNavController().popBackStack()

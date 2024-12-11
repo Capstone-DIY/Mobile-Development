@@ -43,6 +43,8 @@ class FavoriteHistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        requireActivity().findViewById<View>(R.id.nav_view).visibility = View.GONE
+
         // Inisialisasi Adapter
         diaryAdapter = DiaryAdapter(
             onItemClick = { diary ->

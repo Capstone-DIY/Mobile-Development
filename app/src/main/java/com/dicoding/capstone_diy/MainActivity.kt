@@ -53,7 +53,8 @@ class MainActivity : AppCompatActivity() {
 // Listener untuk navigasi manual dengan animasi
         navView.setOnItemSelectedListener { menuItem ->
             val currentDestination = navController.currentDestination?.id
-            val targetDestination = when (menuItem.itemId) {
+            val targetDestination =
+                when (menuItem.itemId) {
                 R.id.navigation_home -> R.id.navigation_home
                 R.id.navigation_statistic -> R.id.navigation_statistic
                 R.id.navigation_profile -> R.id.navigation_profile
@@ -61,7 +62,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (targetDestination != null && targetDestination != currentDestination) {
-                val navOptions = when {
+                val navOptions =
+                    when {
                     // Home ke Statistic atau Statistic ke Profile: geser kiri
                     (currentDestination == R.id.navigation_home && targetDestination == R.id.navigation_statistic) ||
                             (currentDestination == R.id.navigation_statistic && targetDestination == R.id.navigation_profile) ||
