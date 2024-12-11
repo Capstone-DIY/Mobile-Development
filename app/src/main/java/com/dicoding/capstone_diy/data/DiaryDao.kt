@@ -33,4 +33,6 @@ interface DiaryDao {
     @Query("SELECT * FROM diary_table WHERE date BETWEEN :startDate AND :endDate ORDER BY date DESC")
     suspend fun getDiaryBetweenDates(startDate: Long, endDate: Long): List<Diary>
 
+    @Query("SELECT * FROM diary_table WHERE date >= :lastWeekDate ORDER BY date DESC")
+    suspend fun getLastWeekEntries(lastWeekDate: Long): List<Diary>
 }

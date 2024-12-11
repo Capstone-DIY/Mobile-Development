@@ -3,9 +3,13 @@ package com.dicoding.capstone_diy.data
 import android.util.Log
 import com.dicoding.capstone_diy.api.RetrofitInstance
 import com.dicoding.capstone_diy.data.response.DiaryApiResponse
+import com.dicoding.capstone_diy.data.response.QuoteResponse
 import kotlinx.coroutines.flow.Flow
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class DiaryRepository(private val diaryDao: DiaryDao) {
 
@@ -61,7 +65,11 @@ class DiaryRepository(private val diaryDao: DiaryDao) {
 
                 Result.success(apiDiaries ?: emptyList())
             } else {
-                Result.failure(Exception("API error: ${response.errorBody()?.string()}"))
+                if (response.code() == 403) {
+                    throw Exception("Token expired")
+                } else {
+                    throw Exception("API error: ${response.errorBody()?.string()}")
+                }
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -162,6 +170,42 @@ class DiaryRepository(private val diaryDao: DiaryDao) {
         return emotionFrequency
     }
 
+    suspend fun getEmotionStatisticsByDay(): Map<String, Map<String, Int>> {
+        // Hitung tanggal satu minggu yang lalu
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_YEAR, -7) // Mengurangi 7 hari
+        val lastWeekDate = calendar.timeInMillis // Dapatkan waktu dalam milidetik
+
+        // Ambil data dari database dengan lastWeekDate sebagai parameter
+        val diaryEntries = diaryDao.getLastWeekEntries(lastWeekDate)
+
+        // Log data yang diambil dari database
+        Log.d("EmotionStatistics", "Diary entries fetched: $diaryEntries")
+
+        // Format tanggal untuk grouping
+        val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        // Kelompokkan berdasarkan hari dan hitung jumlah per tag emosi
+        val groupedByDay = diaryEntries.groupBy { entry ->
+            dateFormatter.format(entry.date) // Convert Long to String date
+        }
+
+        // Log data setelah dikelompokkan berdasarkan hari
+        Log.d("EmotionStatistics", "Grouped by day: ${groupedByDay.map { it.key to it.value.map { entry -> entry.id } }}")
+
+        // Hitung jumlah per emosi dan log hasilnya
+        val result = groupedByDay.mapValues { (_, entries) ->
+            entries.groupingBy { it.emotion.orEmpty() }.eachCount() // Hitung jumlah per emosi
+        }
+
+        // Log hasil akhir (jumlah per emosi per hari)
+        Log.d("EmotionStatistics", "Result: ${result.map { it.key to it.value }}")
+
+        return result
+    }
+
+
+
     suspend fun deleteDiaryFromApi(token: String, id: Int): Result<Unit> {
         return try {
             // Menghapus diary dari API
@@ -184,6 +228,24 @@ class DiaryRepository(private val diaryDao: DiaryDao) {
         }
     }
 
+    suspend fun getQuote(token: String, dominantEmotion: String): QuoteResponse? {
+        // Cek apakah API menerima request dengan benar
+        Log.d("APIRequest", "Token: $token, Dominant Emotion: $dominantEmotion")
+
+        try {
+            val response = RetrofitInstance.apiService.getQuote("Bearer $token", dominantEmotion)  // Gantilah dengan pemanggilan API yang kamu gunakan
+
+            if (response.isSuccessful) {
+                Log.d("APIResponse", "Response body: ${response.body()}")  // Log respons API
+                return response.body() // Pastikan response.body() berisi data yang benar
+            } else {
+                Log.e("APIResponse", "Error: ${response.code()} - ${response.message()}")  // Log error jika API mengembalikan kode selain 200
+            }
+        } catch (e: Exception) {
+            Log.e("APIResponse", "Exception: ${e.message}")  // Log jika terjadi error saat pemanggilan API
+        }
+        return null
+    }
 
 
     suspend fun insert(diary: Diary) {

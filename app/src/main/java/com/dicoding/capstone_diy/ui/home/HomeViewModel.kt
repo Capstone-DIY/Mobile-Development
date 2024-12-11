@@ -41,6 +41,8 @@ class HomeViewModel(private val repository: DiaryRepository, private val context
         return token
     }
 
+    private val _isTokenExpired = MutableLiveData<Boolean>()
+    val isTokenExpired: LiveData<Boolean> get() = _isTokenExpired
     /**
      * Fetch diaries from the API and update the local database
      */
@@ -59,11 +61,15 @@ class HomeViewModel(private val repository: DiaryRepository, private val context
                 _apiStatus.value = "Success"
                 Log.d("HomeViewModel", "Diaries fetched successfully")
             }.onFailure { exception ->
+                if (exception.message == "Token expired") {
+                    _isTokenExpired.value = true
+                }
                 _apiStatus.value = "Error: ${exception.message}"
                 Log.e("HomeViewModel", "Error fetching diaries: ${exception.message}")
             }
         }
     }
+
 
 
     /**

@@ -51,7 +51,17 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Memanggil fetchDiariesFromApi() untuk mengambil data dari API
-        homeViewModel.fetchDiariesFromApi()
+//        homeViewModel.fetchDiariesFromApi()
+        homeViewModel.isTokenExpired.observe(viewLifecycleOwner, Observer { isExpired ->
+            if (isExpired) {
+                Log.e("HomeFragment", "Token expired, navigating to login")
+                findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+            }
+        })
+
+        homeViewModel.apiStatus.observe(viewLifecycleOwner, Observer { status ->
+            Log.d("HomeFragment", "API Status: $status")
+        })
     }
 
     private fun initRecyclerView() {

@@ -3,6 +3,7 @@ package com.dicoding.capstone_diy.ui.statistic
 import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -25,6 +26,9 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class StatisticFragment : Fragment() {
 
@@ -44,7 +48,7 @@ class StatisticFragment : Fragment() {
         val diaryDao = database.diaryDao()
         val repository = DiaryRepository(diaryDao)
 
-        val factory = StatisticViewModelFactory(repository)
+        val factory = StatisticViewModelFactory(repository, requireContext())
         statisticViewModel = ViewModelProvider(this, factory).get(StatisticViewModel::class.java)
 
         setupObservers()
@@ -54,18 +58,26 @@ class StatisticFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        // Observasi data statistik emosi
-        statisticViewModel.emotionStatistics.observe(viewLifecycleOwner) { statistics ->
-            updateBarChart(statistics)
+
+        // Observasi statistik harian
+        statisticViewModel.dailyDominantEmotionStatistics.observe(viewLifecycleOwner) { dailyStatistics ->
+            updateDailyBarChart(dailyStatistics)
         }
 
         // Observasi emosi dominan
         statisticViewModel.dominantEmotion.observe(viewLifecycleOwner) { dominantEmotion ->
-            binding.overallEmotion.text = "Dominant Emotion: $dominantEmotion"
+            binding.overallEmotion.text = "Overall Emotion: $dominantEmotion"
+            statisticViewModel.fetchQuote()
+        }
+
+        // Observasi quote
+        statisticViewModel.quote.observe(viewLifecycleOwner) { quote ->
+            binding.quoteText.text = quote // Bind the quote to TextView
         }
 
         // Memuat data statistik
         statisticViewModel.loadEmotionStatisticsForLastWeek()
+        statisticViewModel.loadDailyDominantEmotionStatistics()
     }
 
 
@@ -128,184 +140,95 @@ class StatisticFragment : Fragment() {
 
         headerLayout.addView(tableRow)
     }
-    private fun setupBarChart() {
-//        val typedValue = TypedValue()
-//        val theme = requireContext().theme
-//        theme.resolveAttribute(R.attr.chartAxisTextColor, typedValue, true)
-//        val axisTextColor = typedValue.data
-//        val visualMaxLevel = 20f // Tetap maksimum 20 pada sumbu Y
-//        val visualMinLevel = 5f  // Tetap minimum 5 pada sumbu Y
-//        val days = arrayOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-//        val emotionColors = mapOf(
-//            "Anger" to ContextCompat.getColor(requireContext(), R.color.red),
-//            "Sadness" to ContextCompat.getColor(requireContext(), R.color.blue),
-//            "Fear" to ContextCompat.getColor(requireContext(), R.color.green),
-//            "Love" to ContextCompat.getColor(requireContext(), R.color.pink),
-//            "Surprise" to ContextCompat.getColor(requireContext(), R.color.orange),
-//            "Joy" to ContextCompat.getColor(requireContext(), R.color.yellow)
-//        )
-//
-//        val rawData = arrayOf(
-//            mapOf("Anger" to 10f), // Monday
-//            mapOf("Sadness" to 11f),  // Tuesday
-//            mapOf("Fear" to 12f), // Wednesday
-//            mapOf("Love" to 13f),  // Thursday
-//            mapOf("Surprise" to 14f), // Friday
-//            mapOf("Joy" to 15f),  // Saturday
-//            mapOf("Joy" to 17f)   // Sunday
-//        )
-//
-//        val entries = ArrayList<BarEntry>()
-//        val barColors = ArrayList<Int>()
-//
-//        // Menambahkan data bar dan menentukan warna berdasarkan emosi tertinggi
-//        rawData.forEachIndexed { dayIndex, dayData ->
-//            val highestEmotion = dayData.maxByOrNull { it.value } // Cari emosi tertinggi
-//            val totalEmotion = dayData.values.sum() // Hitung total emosi
-//
-//            if (highestEmotion != null) {
-//                entries.add(BarEntry(dayIndex.toFloat(), totalEmotion)) // Tambahkan total emosi untuk hari itu
-//                barColors.add(emotionColors[highestEmotion.key] ?: Color.GRAY) // Tetapkan warna sesuai emosi tertinggi
-//            } else {
-//                barColors.add(Color.GRAY) // Jika tidak ada data, gunakan warna default
-//            }
-//        }
-//
-//        val dataSet = BarDataSet(entries, "Emotion Data").apply {
-//            setColors(barColors)
-//            valueTextColor = Color.TRANSPARENT // Hilangkan angka di atas bar
-//            valueTextSize = 10f
-//        }
-//
-//        val barData = BarData(dataSet)
-//        barData.barWidth = 0.8f // Lebar bar
-//
-//        binding.emotionChart.apply {
-//            data = barData
-//
-//            xAxis.apply {
-//                position = XAxis.XAxisPosition.BOTTOM
-//                granularity = 1f
-//                textColor = axisTextColor
-//                textSize = 10f
-//                labelRotationAngle = 0f
-//                axisMinimum = -0.5f // Mengatur agar sesuai dengan indeks hari
-//                axisMaximum = days.size - 0.5f
-//                setCenterAxisLabels(false)
-//                setDrawGridLines(false)
-//                valueFormatter = object : ValueFormatter() {
-//                    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-//                        return if (value.toInt() in days.indices) days[value.toInt()] else ""
-//                    }
-//                }
-//            }
-//
-//            axisLeft.apply {
-//                granularity = 1f
-//                textSize = 12f
-//                textColor = axisTextColor
-//                axisMinimum = visualMinLevel // Tetap minimum 5
-//                axisMaximum = visualMaxLevel // Tetap maksimum 20
-//                labelCount = 4
-//                valueFormatter = object : ValueFormatter() {
-//                    override fun getFormattedValue(value: Float): String {
-//                        return value.toInt().toString()
-//                    }
-//                }
-//            }
-//
-//            axisRight.isEnabled = false
-//            legend.isEnabled = false
-//            description.isEnabled = false
-//
-//            animateY(1000) // Tambahkan animasi
-//            invalidate()
-//        }
-    }
 
-    private fun updateBarChart(statistics: Map<String, Int>) {
-        // Data harian dan skala sumbu Y
-        val days = arrayOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-        val visualMinLevel = 5f  // Minimum pada sumbu Y
-        val visualMaxLevel = 20f // Maksimum pada sumbu Y
+    private fun updateDailyBarChart(dailyStatistics: Map<String, Pair<String, Int>>) {
+        val typedValue = TypedValue()
+        val theme = requireContext().theme
+        theme.resolveAttribute(R.attr.chartAxisTextColor, typedValue, true)
+        val axisTextColor = typedValue.data
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
-        // Mengonversi data statistik menjadi entri untuk grafik
-        val entries = statistics.entries.mapIndexed { index, entry ->
-            BarEntry(index.toFloat(), entry.value.toFloat())
+        // Tentukan daftar 7 hari terakhir hingga hari ini
+        val daysOfWeek = mutableListOf<String>()
+        for (i in 6 downTo 0) { // Mundur 6 hari
+            calendar.timeInMillis = System.currentTimeMillis()
+            calendar.add(Calendar.DAY_OF_YEAR, -i)
+            daysOfWeek.add(dateFormat.format(calendar.time))
         }
 
-        // Menentukan warna berdasarkan emosi
-        val colors = statistics.keys.map { emotion ->
-            when (emotion) {
-                "Anger" -> ContextCompat.getColor(requireContext(), R.color.red)
-                "Sadness" -> ContextCompat.getColor(requireContext(), R.color.blue)
-                "Joy" -> ContextCompat.getColor(requireContext(), R.color.yellow)
-                "Fear" -> ContextCompat.getColor(requireContext(), R.color.green)
-                "Love" -> ContextCompat.getColor(requireContext(), R.color.pink)
-                "Surprise" -> ContextCompat.getColor(requireContext(), R.color.orange)
-                else -> ContextCompat.getColor(requireContext(), R.color.dark_grey)
+        val dayLabels = daysOfWeek.map {
+            SimpleDateFormat("EEEE", Locale.getDefault()).format(dateFormat.parse(it)!!)
+        } // Mengubah format ke nama hari (e.g., "Monday")
+
+        val entries = mutableListOf<BarEntry>()
+        val colors = mutableListOf<Int>()
+
+        // Isi data untuk semua hari dalam seminggu, kosongkan jika tidak ada
+        daysOfWeek.forEachIndexed { index, date ->
+            val dominantEmotion = dailyStatistics[date]
+            if (dominantEmotion != null) {
+                val (emotion, count) = dominantEmotion
+                entries.add(BarEntry(index.toFloat(), count.toFloat()))
+                val color = when (emotion.lowercase(Locale.getDefault())) {
+                    "anger" -> ContextCompat.getColor(requireContext(), R.color.red)
+                    "sadness" -> ContextCompat.getColor(requireContext(), R.color.blue)
+                    "joy" -> ContextCompat.getColor(requireContext(), R.color.yellow)
+                    "fear" -> ContextCompat.getColor(requireContext(), R.color.green)
+                    "love" -> ContextCompat.getColor(requireContext(), R.color.pink)
+                    "surprise" -> ContextCompat.getColor(requireContext(), R.color.orange)
+                    else -> ContextCompat.getColor(requireContext(), R.color.dark_grey) // Default
+                }
+                colors.add(color)
+            } else {
+                // Jika tidak ada data untuk hari ini
+                entries.add(BarEntry(index.toFloat(), 0f))
+                colors.add(ContextCompat.getColor(requireContext(), R.color.dark_grey))
             }
         }
 
-        // Menyiapkan dataset untuk grafik batang
-        val dataSet = BarDataSet(entries, "Emotion Data").apply {
+        val dataSet = BarDataSet(entries, "Daily Dominant Emotion").apply {
             setColors(colors)
-            valueTextColor = ContextCompat.getColor(requireContext(), R.color.white)
             valueTextSize = 10f
+            valueTextColor = axisTextColor
+            valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return value.toInt().toString() // Menghapus desimal
+                }
+            }
         }
 
-        val barData = BarData(dataSet).apply {
-            barWidth = 0.8f
-        }
-
-        // Mengatur properti grafik batang
         binding.emotionChart.apply {
-            data = barData
-
-            // Sumbu X (hari)
+            data = BarData(dataSet)
             xAxis.apply {
                 position = XAxis.XAxisPosition.BOTTOM
+                textColor = axisTextColor
                 granularity = 1f
-                textColor = ContextCompat.getColor(requireContext(), R.color.white)
-                textSize = 10f
-                axisMinimum = -0.5f // Menyesuaikan agar label sesuai dengan bar
-                axisMaximum = days.size - 0.5f
-                setDrawGridLines(false)
                 valueFormatter = object : ValueFormatter() {
                     override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-                        return if (value.toInt() in days.indices) days[value.toInt()] else ""
+                        return if (value.toInt() in dayLabels.indices) dayLabels[value.toInt()] else ""
                     }
                 }
             }
-
-            // Sumbu Y (angka 5-20)
             axisLeft.apply {
-                granularity = 1f
-                textColor = ContextCompat.getColor(requireContext(), R.color.white)
-                textSize = 10f
-                axisMinimum = visualMinLevel
-                axisMaximum = visualMaxLevel
-                labelCount = 4
-                setDrawGridLines(true)
-                valueFormatter = object : ValueFormatter() {
-                    override fun getFormattedValue(value: Float): String {
-                        return value.toInt().toString()
-                    }
-                }
+                axisMinimum = 0f // Tetapkan nilai minimum
+                axisMaximum = 10f // Tetapkan nilai maksimum tetap
+                textColor = axisTextColor
+
             }
-
-            // Nonaktifkan sumbu Y kanan
             axisRight.isEnabled = false
-
-            // Properti tambahan
-            legend.isEnabled = false
             description.isEnabled = false
+            legend.isEnabled = false
 
-            // Animasi
+            // Disable vertical grid lines
+            xAxis.setDrawGridLines(false)
+            axisLeft.setDrawGridLines(true)
+
             animateY(1000)
             invalidate()
         }
     }
+
 
 
     override fun onDestroyView() {

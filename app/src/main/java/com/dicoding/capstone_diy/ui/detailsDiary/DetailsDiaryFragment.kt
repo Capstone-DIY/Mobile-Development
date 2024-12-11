@@ -68,6 +68,8 @@ class DetailsDiaryFragment : Fragment() {
         binding.dateText.text = formatTimestamp(diary.date)
         binding.titleText.text = diary.title
         binding.descriptionText.text = diary.description
+        binding.tvLabelText.text = diary.emotion
+        binding.responseText.text = diary.response
 
         updateFavoriteIcon(diary.favorited)
 

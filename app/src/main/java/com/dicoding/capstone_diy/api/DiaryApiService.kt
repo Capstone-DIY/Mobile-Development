@@ -2,6 +2,7 @@ package com.dicoding.capstone_diy.api
 
 import com.dicoding.capstone_diy.data.DiaryRequest
 import com.dicoding.capstone_diy.data.response.DiaryApiResponse
+import com.dicoding.capstone_diy.data.response.QuoteResponse
 import com.dicoding.capstone_diy.data.response.SingleDiaryResponse
 import retrofit2.Response
 import retrofit2.http.*
@@ -37,4 +38,10 @@ interface DiaryApiService {
         @Header("Authorization") token: String,
         @Path("diaryId") diaryId: Int
     ): Response<SingleDiaryResponse>
+
+    @GET("/diary/quote")
+    suspend fun getQuote(
+        @Header("Authorization") token: String,
+        @Query("dominantEmotion") dominantEmotion: String
+    ): Response<QuoteResponse>
 }
