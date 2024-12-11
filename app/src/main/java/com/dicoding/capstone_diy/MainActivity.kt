@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.dicoding.capstone_diy.databinding.ActivityMainBinding
 import com.dicoding.capstone_diy.utils.ThemeManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
+
         // Menyembunyikan BottomNavigationView di LoginFragment dan SignUpFragment
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
@@ -42,12 +43,39 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home, R.id.navigation_statistic, R.id.navigation_profile
-            )
-        )
-        navView.setupWithNavController(navController)
+//        val appBarConfiguration = AppBarConfiguration(
+//            setOf(
+//                R.id.navigation_home, R.id.navigation_statistic, R.id.navigation_profile
+//            )
+//        )
+//        navView.setupWithNavController(navController)
+
+// Listener untuk navigasi manual dengan animasi
+        navView.setOnItemSelectedListener { menuItem ->
+            val navOptions = NavOptions.Builder()
+                .setEnterAnim(R.anim.slide_in_right)
+                .setExitAnim(R.anim.slide_out_left)
+                .setPopEnterAnim(R.anim.slide_in_left)
+                .setPopExitAnim(R.anim.slide_out_right)
+                .build()
+
+            when (menuItem.itemId) {
+                R.id.navigation_home -> {
+                    navController.navigate(R.id.navigation_home, null, navOptions)
+                    true
+                }
+                R.id.navigation_statistic -> {
+                    navController.navigate(R.id.navigation_statistic, null, navOptions)
+                    true
+                }
+                R.id.navigation_profile -> {
+                    navController.navigate(R.id.navigation_profile, null, navOptions)
+                    true
+                }
+                else -> false
+            }
+        }
+
         // Pulihkan fragment terakhir jika Activity dimuat ulang
 //        val sharedPref = getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
 //        val lastFragment = sharedPref.getInt("lastFragment", R.id.navigation_home) // Default ke Home

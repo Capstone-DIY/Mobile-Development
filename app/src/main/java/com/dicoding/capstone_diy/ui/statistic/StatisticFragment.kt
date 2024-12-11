@@ -43,6 +43,7 @@ class StatisticFragment : Fragment() {
     ): View {
         _binding = FragmentStatisticBinding.inflate(inflater, container, false)
 
+
         // Inisialisasi ViewModel dengan Factory
         val database = DiaryDatabase.getDatabase(requireContext())
         val diaryDao = database.diaryDao()

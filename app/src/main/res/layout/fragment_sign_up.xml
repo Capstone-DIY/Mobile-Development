@@ -9,7 +9,7 @@
         android:id="@+id/etName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:hint="Name"
         android:backgroundTint="@color/purple_500"
         android:minHeight="50dp"
@@ -75,23 +75,62 @@
         app:layout_constraintStart_toEndOf="@+id/btnSubmit"
         app:layout_constraintTop_toBottomOf="@+id/etConfirmPassword" />
 
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/logoDIY"
+        android:src="@drawable/logo_diy"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"/>
+
+    <!-- Logo DIY -->
+    <TextView
+        android:id="@+id/tvLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DIY"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_purple"
+        app:layout_constraintTop_toBottomOf="@id/logoDIY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:id="@+id/diyTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Discover Inner You"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_purple"
+        app:layout_constraintTop_toBottomOf="@id/tvLogo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="2dp" />
+
     <TextView
         android:id="@+id/tvSignUpTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="152dp"
+        android:layout_marginTop="15dp"
         android:text="Sign Up"
         android:textSize="24sp"
+        android:textColor="@android:color/holo_purple"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/diyTitle" />
 
     <TextView
         android:id="@+id/tvAccesPersonal"
-        android:layout_width="250dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_purple"
         android:layout_marginTop="8dp"
         android:text="Let’s get you all set up so you can access your personal account."
         android:textSize="15sp"

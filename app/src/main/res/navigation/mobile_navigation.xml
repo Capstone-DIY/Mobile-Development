@@ -42,6 +42,28 @@
         <action
             android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_navigation_statistic"
+            app:destination="@id/navigation_statistic">
+            <navOptions>
+                <anim
+                    app:enterAnim="@anim/slide_in_right"
+                    app:exitAnim="@anim/slide_out_left"
+                    app:popEnterAnim="@anim/slide_in_left"
+                    app:popExitAnim="@anim/slide_out_right" />
+            </navOptions>
+        </action>
+        <action
+            android:id="@+id/action_homeFragment_to_navigation_profile"
+            app:destination="@id/navigation_profile">
+            <navOptions>
+                <anim
+                    app:enterAnim="@anim/slide_in_right"
+                    app:exitAnim="@anim/slide_out_left"
+                    app:popEnterAnim="@anim/slide_in_left"
+                    app:popExitAnim="@anim/slide_out_right" />
+            </navOptions>
+        </action>
     </fragment>
 
     <fragment
@@ -63,35 +85,101 @@
            android:id="@+id/navigation_statistic"
            android:name="com.dicoding.capstone_diy.ui.statistic.StatisticFragment"
            android:label="@string/title_statistic"
-           tools:layout="@layout/fragment_statistic" />
+           tools:layout="@layout/fragment_statistic" >
+        <action
+            android:id="@+id/action_statisticFragment_to_navigation_home"
+            app:destination="@id/navigation_home">
+            <navOptions>
+                <anim
+                    app:enterAnim="@anim/slide_in_right"
+                    app:exitAnim="@anim/slide_out_left"
+                    app:popEnterAnim="@anim/slide_in_left"
+                    app:popExitAnim="@anim/slide_out_right" />
+            </navOptions>
+        </action>
+        <action
+            android:id="@+id/action_statisticFragment_to_navigation_profile"
+            app:destination="@id/navigation_profile">
+            <navOptions>
+                <anim
+                    app:enterAnim="@anim/slide_in_right"
+                    app:exitAnim="@anim/slide_out_left"
+                    app:popEnterAnim="@anim/slide_in_left"
+                    app:popExitAnim="@anim/slide_out_right" />
+            </navOptions>
+        </action>
+    </fragment>
+    <action
+        android:id="@+id/action_statisticFragment_to_navigation_home"
+        app:destination="@id/navigation_home">
+        <navOptions>
+            <anim
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+        </navOptions>
+    </action>
+    <action
+        android:id="@+id/action_statisticFragment_to_navigation_profile"
+        app:destination="@id/navigation_profile">
+        <navOptions>
+            <anim
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+        </navOptions>
+    </action>
 
-        <fragment
-            android:id="@+id/navigation_profile"
-            android:name="com.dicoding.capstone_diy.ui.profile.ProfileFragment"
-            android:label="@string/title_profile"
-            tools:layout="@layout/fragment_profile">
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.dicoding.capstone_diy.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile">
 
-            <action
-                android:id="@+id/action_navigation_profile_to_editProfileFragment"
-                app:destination="@id/navigation_edit_profile" />
-            <action
-                android:id="@+id/action_navigation_profile_to_favoriteHistoryFragment"
-                app:destination="@id/navigation_favorite_history" />
-            <action
-                android:id="@+id/action_navigation_profile_to_loginFragment"
-                app:destination="@id/loginFragment" />
-        </fragment>
+        <action
+            android:id="@+id/action_navigation_profile_to_editProfileFragment"
+            app:destination="@id/navigation_edit_profile" />
+        <action
+            android:id="@+id/action_navigation_profile_to_favoriteHistoryFragment"
+            app:destination="@id/navigation_favorite_history" />
+        <action
+            android:id="@+id/action_navigation_profile_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_navigation_home"
+            app:destination="@id/navigation_home">
+            <navOptions>
+                <anim
+                    app:enterAnim="@anim/slide_in_right"
+                    app:exitAnim="@anim/slide_out_left"
+                    app:popEnterAnim="@anim/slide_in_left"
+                    app:popExitAnim="@anim/slide_out_right" />
+            </navOptions>
+        </action>
+        <action
+            android:id="@+id/action_navigation_profile_to_navigation_statistic"
+            app:destination="@id/navigation_statistic">
+            <navOptions>
+                <anim
+                    app:enterAnim="@anim/slide_in_right"
+                    app:exitAnim="@anim/slide_out_left"
+                    app:popEnterAnim="@anim/slide_in_left"
+                    app:popExitAnim="@anim/slide_out_right" />
+            </navOptions>
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_edit_profile"
+        android:name="com.dicoding.capstone_diy.ui.editprofile.EditProfileFragment"
+        android:label="Edit Profile"
+        tools:layout="@layout/fragment_edit_profile" />
 
-        <fragment
-            android:id="@+id/navigation_edit_profile"
-            android:name="com.dicoding.capstone_diy.ui.editprofile.EditProfileFragment"
-            android:label="Edit Profile"
-            tools:layout="@layout/fragment_edit_profile" />
-
-        <fragment
-            android:id="@+id/navigation_favorite_history"
-            android:name="com.dicoding.capstone_diy.ui.favorite.FavoriteHistoryFragment"
-            android:label="Favorite History"
-            tools:layout="@layout/fragment_favorite_history"/>
+    <fragment
+        android:id="@+id/navigation_favorite_history"
+        android:name="com.dicoding.capstone_diy.ui.favorite.FavoriteHistoryFragment"
+        android:label="Favorite History"
+        tools:layout="@layout/fragment_favorite_history"/>
 
 </navigation>
