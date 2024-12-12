@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="src/app/logo.png" alt="Logo" width="130" height="130">
+    <img src="src/main/res/drawable/logo_diy.png" alt="Logo" width="130" height="130">
   </a>
 
   <h3 align="center">Discover Inner You</h3>
@@ -30,10 +30,9 @@ These days, more and more individuals are experiencing emotional challenges such
 
 ### Featured Technologies
 
-- **[Node.js](https://nodejs.org)**: It is suitable for those who need real-time communication between client and server. The single-threaded event system is very fast when handling many requests at once from clients.
-- **[Framework Express.js](https://expressjs.com)**: This framework offers several features such as routing, view rendering, and supports middleware. In other words, it will save a lot of time in Node.js application development.
-- **[Google Cloud Platform (GCP)](https://cloud.google.com/)**: Grow from prototype to production without having to think about capacity, reliability, or performance. Easily capture, manage, process, and visualize data with Google Cloud data analytics products.
-
+- **[Figma](https://www.figma.com/)**: Figma apps are used for DIY (Discover Inner You) design, especially for creating user interfaces (UI) and creating seamless and engaging user experiences (UX). With features such as reusable components, developer-friendly tools, and plugins galore, Figma simplifies the design process while ensuring that DIY apps achieve a consistent, polished, and professional look.
+- **[Android Studio](https://developer.android.com/studio)**: It is suitable for those who need real-time communication between client and server. The single-threaded event system is very fast when handling many requests at once from clients.
+- 
 ## Contact
 
 | Name                  |  Path  | Email                     |
