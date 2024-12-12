@@ -8,8 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dicoding.capstone_diy.data.Diary
 import com.dicoding.capstone_diy.data.DiaryRepository
-import com.dicoding.capstone_diy.data.DiaryRequest
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repository: DiaryRepository, private val context: Context) : ViewModel() {
@@ -21,7 +19,6 @@ class HomeViewModel(private val repository: DiaryRepository, private val context
     val apiStatus: LiveData<String> get() = _apiStatus
 
     init {
-        // Load data from local database
         viewModelScope.launch {
             repository.allDiaries.collect { diaryList ->
                 _diaries.value = diaryList
@@ -29,7 +26,6 @@ class HomeViewModel(private val repository: DiaryRepository, private val context
         }
     }
 
-    // Helper method to get the token from SharedPreferences
     private fun getToken(): String? {
         val sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("firebase_id_token", null)
@@ -43,9 +39,7 @@ class HomeViewModel(private val repository: DiaryRepository, private val context
 
     private val _isTokenExpired = MutableLiveData<Boolean>()
     val isTokenExpired: LiveData<Boolean> get() = _isTokenExpired
-    /**
-     * Fetch diaries from the API and update the local database
-     */
+
     fun fetchDiariesFromApi() {
         viewModelScope.launch {
             _apiStatus.value = "Loading"
@@ -70,11 +64,6 @@ class HomeViewModel(private val repository: DiaryRepository, private val context
         }
     }
 
-
-
-    /**
-     * Update a diary in the local database
-     */
     fun updateDiary(diary: Diary) {
         viewModelScope.launch {
             repository.update(diary)

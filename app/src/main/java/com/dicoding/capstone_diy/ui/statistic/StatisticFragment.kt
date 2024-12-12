@@ -1,9 +1,6 @@
 package com.dicoding.capstone_diy.ui.statistic
 
-import android.graphics.Color
 import android.os.Bundle
-import android.text.TextUtils
-import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -43,8 +40,6 @@ class StatisticFragment : Fragment() {
     ): View {
         _binding = FragmentStatisticBinding.inflate(inflater, container, false)
 
-
-        // Inisialisasi ViewModel dengan Factory
         val database = DiaryDatabase.getDatabase(requireContext())
         val diaryDao = database.diaryDao()
         val repository = DiaryRepository(diaryDao)
@@ -60,23 +55,19 @@ class StatisticFragment : Fragment() {
 
     private fun setupObservers() {
 
-        // Observasi statistik harian
         statisticViewModel.dailyDominantEmotionStatistics.observe(viewLifecycleOwner) { dailyStatistics ->
             updateDailyBarChart(dailyStatistics)
         }
 
-        // Observasi emosi dominan
         statisticViewModel.dominantEmotion.observe(viewLifecycleOwner) { dominantEmotion ->
             binding.overallEmotion.text = "Overall Emotion: $dominantEmotion"
             statisticViewModel.fetchQuote()
         }
 
-        // Observasi quote
         statisticViewModel.quote.observe(viewLifecycleOwner) { quote ->
             binding.quoteText.text = quote // Bind the quote to TextView
         }
 
-        // Memuat data statistik
         statisticViewModel.loadEmotionStatisticsForLastWeek()
         statisticViewModel.loadDailyDominantEmotionStatistics()
     }
@@ -94,7 +85,7 @@ class StatisticFragment : Fragment() {
         )
 
         val headerLayout = binding.chartHeader
-        headerLayout.removeAllViews() // Kosongkan header jika ada
+        headerLayout.removeAllViews()
 
         val tableRow = TableRow(requireContext()).apply {
             layoutParams = TableLayout.LayoutParams(
@@ -110,15 +101,15 @@ class StatisticFragment : Fragment() {
                 layoutParams = TableRow.LayoutParams(
                     0,
                     TableRow.LayoutParams.WRAP_CONTENT,
-                    1f // Distribusi elemen proporsional
+                    1f
                 ).apply {
-                    setMargins(0, 0, 0, 0) // Tambahkan margin untuk ruang antar elemen
+                    setMargins(0, 0, 0, 0)
                 }
             }
 
             val colorBox = View(requireContext()).apply {
                 layoutParams = LinearLayout.LayoutParams(30, 30).apply {
-                    setMargins(0, 0, 5, 0) // Ruang antara kotak warna dan teks
+                    setMargins(0, 0, 5, 0)
                 }
                 setBackgroundColor(emotionColors[index])
             }
@@ -130,7 +121,7 @@ class StatisticFragment : Fragment() {
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply {
-                    width = 120 // Tetapkan lebar tetap untuk elemen teks
+                    width = 120
                 }
             }
 
@@ -150,7 +141,6 @@ class StatisticFragment : Fragment() {
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
-        // Tentukan daftar 7 hari terakhir hingga hari ini
         val daysOfWeek = mutableListOf<String>()
         for (i in 6 downTo 0) { // Mundur 6 hari
             calendar.timeInMillis = System.currentTimeMillis()
@@ -160,12 +150,11 @@ class StatisticFragment : Fragment() {
 
         val dayLabels = daysOfWeek.map {
             SimpleDateFormat("EEEE", Locale.getDefault()).format(dateFormat.parse(it)!!)
-        } // Mengubah format ke nama hari (e.g., "Monday")
+        }
 
         val entries = mutableListOf<BarEntry>()
         val colors = mutableListOf<Int>()
 
-        // Isi data untuk semua hari dalam seminggu, kosongkan jika tidak ada
         daysOfWeek.forEachIndexed { index, date ->
             val dominantEmotion = dailyStatistics[date]
             if (dominantEmotion != null) {
@@ -182,7 +171,6 @@ class StatisticFragment : Fragment() {
                 }
                 colors.add(color)
             } else {
-                // Jika tidak ada data untuk hari ini
                 entries.add(BarEntry(index.toFloat(), 0f))
                 colors.add(ContextCompat.getColor(requireContext(), R.color.dark_grey))
             }
@@ -194,7 +182,7 @@ class StatisticFragment : Fragment() {
             valueTextColor = axisTextColor
             valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
-                    return value.toInt().toString() // Menghapus desimal
+                    return value.toInt().toString()
                 }
             }
         }
@@ -212,8 +200,8 @@ class StatisticFragment : Fragment() {
                 }
             }
             axisLeft.apply {
-                axisMinimum = 0f // Tetapkan nilai minimum
-                axisMaximum = 10f // Tetapkan nilai maksimum tetap
+                axisMinimum = 0f
+                axisMaximum = 10f
                 textColor = axisTextColor
 
             }
@@ -221,7 +209,6 @@ class StatisticFragment : Fragment() {
             description.isEnabled = false
             legend.isEnabled = false
 
-            // Disable vertical grid lines
             xAxis.setDrawGridLines(false)
             axisLeft.setDrawGridLines(true)
 
@@ -229,8 +216,6 @@ class StatisticFragment : Fragment() {
             invalidate()
         }
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()

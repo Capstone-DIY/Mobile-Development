@@ -1,8 +1,6 @@
 package com.dicoding.capstone_diy.ui.profile
 
-import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,7 +18,7 @@ class ProfileViewModel(private val repository: DiaryRepository) : ViewModel() {
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
 
-    private val _successMessage = MutableLiveData<String?>() // Added success message
+    private val _successMessage = MutableLiveData<String?>()
     val successMessage: LiveData<String?> = _successMessage
 
     fun fetchUserProfile(token: String) {
@@ -53,7 +51,7 @@ class ProfileViewModel(private val repository: DiaryRepository) : ViewModel() {
     fun deleteAllDiaries() {
         viewModelScope.launch {
             try {
-                val result = repository.deleteAllDiaries() // Assuming this function handles deletion in repository
+                val result = repository.deleteAllDiaries()
                 if (result) {
                     _successMessage.postValue("All diaries have been successfully deleted.")
                 } else {
@@ -67,7 +65,7 @@ class ProfileViewModel(private val repository: DiaryRepository) : ViewModel() {
 
     fun getToken(context: Context): String? {
         val sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
-        return sharedPreferences.getString("firebase_id_token", null) // Make sure to store token in SharedPreferences when user logs in
+        return sharedPreferences.getString("firebase_id_token", null)
     }
 
 

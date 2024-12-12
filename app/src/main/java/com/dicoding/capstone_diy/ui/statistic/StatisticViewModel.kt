@@ -22,15 +22,12 @@ class StatisticViewModel(private val repository: DiaryRepository, private val co
         viewModelScope.launch {
             val dailyStats = repository.getEmotionStatisticsByDay()
 
-            // Cari emosi dominan per hari
             val dominantStats = dailyStats.mapValues { (_, emotions) ->
                 emotions.maxByOrNull { it.value }?.toPair() ?: ("Neutral" to 0)
             }
 
-            // Simpan hasil ke LiveData
             _dailyDominantEmotionStatistics.value = dominantStats
 
-            // Log hasil emosi dominan per hari
             dominantStats.forEach { (date, dominant) ->
                 Log.d("DailyDominantEmotion", "Date: $date, Dominant: ${dominant.first} (${dominant.second})")
             }
@@ -46,15 +43,13 @@ class StatisticViewModel(private val repository: DiaryRepository, private val co
             val statistics = repository.getEmotionStatisticsForLastWeek()
             _emotionStatistics.value = statistics
 
-            // Cari emosi dominan
             val maxCount = statistics.values.maxOrNull() ?: 0
             val dominantEmotions = statistics.filter { it.value == maxCount }.keys
 
-            // Jika ada lebih dari satu emosi dengan jumlah tertinggi yang sama, pilih "Neutral"
             val dominant = if (dominantEmotions.size > 1) {
-                "neutral"
+                "Neutral"
             } else {
-                dominantEmotions.firstOrNull() ?: "neutral"
+                dominantEmotions.firstOrNull() ?: "Neutral"
             }
 
             _dominantEmotion.value = dominant
@@ -65,39 +60,37 @@ class StatisticViewModel(private val repository: DiaryRepository, private val co
         }
     }
 
-    // Add a LiveData for the quote
     private val _quote = MutableLiveData<String>()
     val quote: LiveData<String> = _quote
 
-    // Add a method to fetch the quote
     fun fetchQuote() {
         val token = getToken()
         val dominantEmotion = _dominantEmotion.value
 
-        Log.d("QuoteFetch", "Token: $token")  // Log token yang diambil
+        Log.d("QuoteFetch", "Token: $token")
         Log.d("QuoteFetch", "Dominant Emotion: $dominantEmotion")
 
         if (token != null && dominantEmotion != null) {
             viewModelScope.launch {
                 try {
-                    Log.d("QuoteFetch", "Making API call...")  // Log sebelum API call
+                    Log.d("QuoteFetch", "Making API call...")
 
                     val response = repository.getQuote(token, dominantEmotion)
 
                     if (response != null) {
-                        Log.d("QuoteFetch", "API response: $response")  // Log jika respons diterima
-                        _quote.value = response.quote // Assuming the quote is inside `QuoteResponse` and the field is `quote`
+                        Log.d("QuoteFetch", "API response: $response")
+                        _quote.value = response.quote
                     } else {
-                        Log.d("QuoteFetch", "No response from API")  // Log jika respons kosong
+                        Log.d("QuoteFetch", "No response from API")
                         _quote.value = "No quote available"
                     }
                 } catch (e: Exception) {
-                    Log.e("QuoteFetch", "Error fetching quote: ${e.message}")  // Log jika ada exception
+                    Log.e("QuoteFetch", "Error fetching quote: ${e.message}")
                     _quote.value = "No quote available"
                 }
             }
         } else {
-            Log.d("QuoteFetch", "Token or Dominant Emotion is null")  // Log jika token atau emosi dominan null
+            Log.d("QuoteFetch", "Token or Dominant Emotion is null")
             _quote.value = "No quote available"
         }
     }

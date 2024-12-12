@@ -15,7 +15,6 @@ class SignUpViewModel : ViewModel() {
     private val _registerResult = MutableLiveData<ResultState>()
     val registerResult: LiveData<ResultState> get() = _registerResult
 
-    // Fungsi untuk melakukan registrasi
     fun registerUser(name: String, email: String, password: String, contactNumber: String) {
         Log.d("SignUpViewModel", "Registering user with name: $name, email: $email, contactNumber: $contactNumber")
 
@@ -27,10 +26,9 @@ class SignUpViewModel : ViewModel() {
                     "name" to name,
                     "email" to email,
                     "password" to password,
-                    "contact_number" to contactNumber // Tambahkan contact_number
+                    "contact_number" to contactNumber
                 )
 
-                // Menggunakan suspend function untuk request
                 val response: Response<RegisterResponse> = RetrofitInstance.userService.registerUser(user)
 
                 if (response.isSuccessful) {
@@ -47,7 +45,6 @@ class SignUpViewModel : ViewModel() {
         }
     }
 
-    // State untuk menampung hasil dari API request
     sealed class ResultState {
         data class Success(val data: RegisterResponse?) : ResultState()
         data class Error(val message: String) : ResultState()

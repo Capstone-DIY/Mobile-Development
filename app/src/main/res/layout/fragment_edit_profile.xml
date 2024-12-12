@@ -47,8 +47,6 @@
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
-    <!-- Form Fields -->
-
     <ImageView
         android:id="@+id/profileImage"
         android:layout_width="120dp"

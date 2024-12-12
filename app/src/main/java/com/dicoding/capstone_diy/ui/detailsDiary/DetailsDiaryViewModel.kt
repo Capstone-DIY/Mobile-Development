@@ -15,7 +15,6 @@ class DetailsDiaryViewModel(private val repository: DiaryRepository, private val
     private val _diary = MutableLiveData<Diary>()
     val diary: LiveData<Diary> get() = _diary
 
-    // Fungsi untuk memperbarui data Diary
     fun updateDiary(diary: Diary) {
         viewModelScope.launch {
             repository.update(diary)

@@ -62,20 +62,16 @@ class LoginFragment : Fragment() {
                                     val idToken = tokenTask.result?.token
                                     if (idToken != null) {
                                         loginViewModel.saveToken(requireContext(), idToken)
-                                        // Menggunakan Log.d untuk menampilkan Firebase Token
                                         Log.d("LoginFragment", "Token berhasil disimpan: $idToken")
                                         loginViewModel.loginWithBackendAPI(email, password)
                                     } else {
-                                        // Log jika tidak bisa mengambil token
                                         Log.d("LoginFragment", "Tidak dapat mengambil token")
                                     }
                                 } else {
-                                    // Log jika gagal mendapatkan token
                                     Log.d("LoginFragment", "Error mendapatkan token: ${tokenTask.exception?.message}")
                                 }
                             }
                     } else {
-                        // Menjaga Toast untuk Login gagal tetap ada
                         Toast.makeText(requireContext(), "Login gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -123,7 +119,6 @@ class LoginFragment : Fragment() {
     private fun checkToken() {
         val token = loginViewModel.getToken(requireContext())
         if (token != null) {
-            // Menggunakan Log untuk menampilkan token
             android.util.Log.d("LoginFragment", "Token tersedia: $token")
         } else {
             android.util.Log.d("LoginFragment", "Token belum tersedia")

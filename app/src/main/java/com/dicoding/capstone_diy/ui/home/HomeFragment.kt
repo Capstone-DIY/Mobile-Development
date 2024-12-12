@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,11 +22,10 @@ class HomeFragment : Fragment() {
 
     private lateinit var diaryAdapter: DiaryAdapter
 
-    // Inisialisasi ViewModel dengan factory
     private val homeViewModel: HomeViewModel by viewModels {
         val diaryDao = DiaryDatabase.getDatabase(requireContext()).diaryDao()
         val repository = DiaryRepository(diaryDao)
-        HomeViewModelFactory(repository, requireContext()) // Passing context here
+        HomeViewModelFactory(repository, requireContext())
     }
 
     override fun onCreateView(
@@ -36,10 +34,8 @@ class HomeFragment : Fragment() {
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        // Inisialisasi RecyclerView
         initRecyclerView()
 
-        // Set OnClickListener untuk FAB (Floating Action Button) untuk navigasi ke AddDiaryFragment
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_addDiaryFragment)
         }
@@ -50,7 +46,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Memanggil fetchDiariesFromApi() untuk mengambil data dari API
         homeViewModel.fetchDiariesFromApi()
         homeViewModel.isTokenExpired.observe(viewLifecycleOwner, Observer { isExpired ->
             if (isExpired) {
@@ -65,7 +60,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        // Initialize Adapter with the click listeners
         diaryAdapter = DiaryAdapter(
             onItemClick = { diary ->
                 val bundle = Bundle().apply {
@@ -78,7 +72,6 @@ class HomeFragment : Fragment() {
             }
         )
 
-        // Observe diary data from ViewModel
         homeViewModel.diaries.observe(viewLifecycleOwner, Observer { diaries ->
             if (diaries.isNotEmpty()) {
                 binding.recyclerView.visibility = View.VISIBLE
@@ -94,12 +87,10 @@ class HomeFragment : Fragment() {
             }
         })
 
-        // Observe API status for debugging
         homeViewModel.apiStatus.observe(viewLifecycleOwner, Observer { status ->
             Log.d("HomeFragment", "API Status: $status")
         })
 
-        // Setup RecyclerView
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             binding.recyclerView.adapter = diaryAdapter

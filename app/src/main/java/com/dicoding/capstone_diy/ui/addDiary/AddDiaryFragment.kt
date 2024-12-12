@@ -20,7 +20,7 @@ class AddDiaryFragment : Fragment() {
     private lateinit var repository: DiaryRepository
 
     private val addDiaryViewModel: AddDiaryViewModel by viewModels {
-        AddDiaryViewModelFactory(requireContext()) // Pass the context here
+        AddDiaryViewModelFactory(requireContext())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

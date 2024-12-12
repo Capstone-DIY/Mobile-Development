@@ -70,7 +70,6 @@ class SignUpFragment : Fragment() {
                 }
                 is SignUpViewModel.ResultState.Error -> {
                     Log.e("SignUpFragment", "Registration failed: ${result.message}")
-                    // Show the error message to user (gunakan Toast atau dialog)
                 }
             }
         })
@@ -85,6 +84,7 @@ class SignUpFragment : Fragment() {
             }
             false
         }
+
         binding.etConfirmPassword.setOnTouchListener { _, event ->
             val DRAWABLE_END = 2
             if (event.action == MotionEvent.ACTION_UP) {

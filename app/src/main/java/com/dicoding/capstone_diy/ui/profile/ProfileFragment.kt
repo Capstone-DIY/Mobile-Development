@@ -28,9 +28,8 @@ class ProfileFragment : Fragment() {
     private val profileViewModel: ProfileViewModel by viewModels {
         val diaryDao = DiaryDatabase.getDatabase(requireContext()).diaryDao()
         val repository = DiaryRepository(diaryDao)
-        ProfileViewModelFactory(repository) // Tidak perlu passing context
+        ProfileViewModelFactory(repository)
     }
-
 
     private lateinit var auth: FirebaseAuth
 
@@ -45,13 +44,11 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Inisialisasi FirebaseAuth
         auth = FirebaseAuth.getInstance()
 
         val token = profileViewModel.getToken(requireContext())
 
         if (token != null) {
-            // Pass token to ViewModel for API call
             profileViewModel.fetchUserProfile(token)
             Log.d("ProfileFragment", "Token berhasil didapat: $token")
         } else {
@@ -59,7 +56,6 @@ class ProfileFragment : Fragment() {
             Log.d("ProfileFragment", "Tidak dapat mengambil token")
         }
 
-        // Observasi data profil pengguna
         profileViewModel.userProfile.observe(viewLifecycleOwner, Observer { user ->
             if (user != null) {
                 binding.profileName.text = user.name ?: "-"
@@ -71,62 +67,50 @@ class ProfileFragment : Fragment() {
             }
         })
 
-        // Observasi error
         profileViewModel.errorMessage.observe(viewLifecycleOwner, Observer { error ->
             error?.let {
                 if (it.contains("Token expired") || it.contains("Token invalid")) {
                     profileViewModel.deleteAllDiaries()
 
-                    // Clear token from SharedPreferences
                     val sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE)
                     sharedPreferences.edit().remove("firebase_id_token").apply()
 
-                    // Notify user and navigate to login screen
                     Toast.makeText(context, "Token expired or invalid. Please login again.", Toast.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.action_navigation_profile_to_loginFragment)
                 } else {
-                    // Handle other error messages
                     Toast.makeText(context, "Error: $it", Toast.LENGTH_SHORT).show()
                 }
             }
         })
 
-
-        // Ambil status tema dari SharedPreferences
         val sharedPreferences =
             requireContext().getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
         val isDarkMode = sharedPreferences.getBoolean("isDarkMode", false)
 
-        // Atur Switch tanpa memicu listener
         isSwitchInitialized = false
         binding.themeSwitch.isChecked = isDarkMode
         isSwitchInitialized = true
 
-        // Listener untuk Switch Tema
         binding.themeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isSwitchInitialized) {
                 ThemeManager.saveThemePreference(requireContext(), isChecked)
 
-                // Simpan fragment aktif sebelum Activity di-recreate
                 val navController = findNavController()
                 val sharedPref = requireContext().getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
                 sharedPref.edit().putInt("lastFragment", navController.currentDestination?.id ?: R.id.navigation_home).apply()
 
-                requireActivity().recreate() // Memulai ulang Activity
+                requireActivity().recreate()
             }
         }
 
-        // Navigasi ke Edit Profile
         binding.editProfileContainer.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_profile_to_editProfileFragment)
         }
 
-        // Navigasi ke Favorite History
         binding.favoriteContainer.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_profile_to_favoriteHistoryFragment)
         }
 
-        // Logout dan hapus status login
         binding.logoutContainer.setOnClickListener {
             val dialogView =
                 LayoutInflater.from(requireContext()).inflate(R.layout.custom_dialog_logout, null)
@@ -139,14 +123,11 @@ class ProfileFragment : Fragment() {
 
             dialogView.findViewById<Button>(R.id.btnYes).setOnClickListener {
                 profileViewModel.deleteAllDiaries()
-                // Logout dari Firebase
                 auth.signOut()
 
-                // Hapus status login di SharedPreferences
                 val sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE)
                 sharedPreferences.edit().putBoolean("is_logged_in", false).apply()
 
-                // Tutup dialog dan navigasi kembali ke halaman login
                 alertDialog.dismiss()
                 findNavController().navigate(R.id.action_navigation_profile_to_loginFragment)
             }

@@ -15,7 +15,7 @@ import java.util.Locale
 
 class DiaryAdapter(
                    private val onItemClick: (Diary) -> Unit,
-                   private val onFavoriteClick: (Diary) -> Unit // Tambahkan parameter ini
+                   private val onFavoriteClick: (Diary) -> Unit
 ) :
     ListAdapter<Diary, DiaryAdapter.DiaryViewHolder>(DIFF_CALLBACK) {
 
@@ -42,11 +42,9 @@ class DiaryAdapter(
             binding.titleText.text = diary.title
             binding.descriptionText.text = diary.description
 
-            // Set ikon favorit berdasarkan status
             val favoriteIcon = if (diary.favorited) R.drawable.baseline_favorite_24 else R.drawable.baseline_favorite_border_24
             binding.heartIcon.setImageResource(favoriteIcon)
 
-            // Klik tombol favorit
             binding.heartIcon.setOnClickListener {
                 val updatedDiary = diary.copy(favorited = !diary.favorited)
                 onFavoriteClick(updatedDiary)
@@ -57,7 +55,6 @@ class DiaryAdapter(
             }
         }
 
-        // Fungsi untuk memformat timestamp ke string tanggal
         private fun formatTimestamp(timestamp: Long): String {
             val dateFormat = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault())
             return dateFormat.format(Date(timestamp))

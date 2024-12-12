@@ -28,11 +28,11 @@ class DetailsDiaryFragment : Fragment() {
     private val detailsDiaryViewModel: DetailsDiaryViewModel by viewModels {
         val diaryDao = DiaryDatabase.getDatabase(requireContext()).diaryDao()
         val repository = DiaryRepository(diaryDao)
-        DetailsDiaryViewModelFactory(repository, requireContext()) // Passing context here
+        DetailsDiaryViewModelFactory(repository, requireContext())
     }
 
 
-    private var diary: Diary? = null // Simpan diary sebagai properti
+    private var diary: Diary? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,24 +40,21 @@ class DetailsDiaryFragment : Fragment() {
     ): View {
         _binding = FragmentDetailsDiaryBinding.inflate(inflater, container, false)
 
-        // Ambil data Diary dari Bundle
         diary = arguments?.let {
             BundleCompat.getParcelable(it, "diary", Diary::class.java)
         }
 
-        // Set data Diary ke UI
         diary?.let { updateUI(it) }
 
-        // Set OnClickListener untuk tombol back
         binding.backIcon.setOnClickListener {
             findNavController().navigateUp()
         }
 
         binding.btnDelete.setOnClickListener {
             diary?.let { diary ->
-                detailsDiaryViewModel.deleteDiary(diary) // Panggil fungsi delete di ViewModel
+                detailsDiaryViewModel.deleteDiary(diary)
                 Handler(Looper.getMainLooper()).postDelayed({
-                    findNavController().navigateUp() // Kembali ke halaman sebelumnya setelah delay
+                    findNavController().navigateUp()
                 }, 2000)
             }
         }
@@ -68,7 +65,6 @@ class DetailsDiaryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Sembunyikan Bottom Navigation View
         requireActivity().findViewById<View>(R.id.nav_view).visibility = View.GONE
     }
 
@@ -84,14 +80,13 @@ class DetailsDiaryFragment : Fragment() {
         binding.heartIcon.setOnClickListener {
             val updatedDiary = this.diary?.copy(favorited = !(this.diary?.favorited ?: false))
             if (updatedDiary != null) {
-                detailsDiaryViewModel.updateDiary(updatedDiary) // Perbarui di database
-                this.diary = updatedDiary // Simpan perubahan ke properti lokal
-                updateFavoriteIcon(updatedDiary.favorited) // Perbarui ikon
+                detailsDiaryViewModel.updateDiary(updatedDiary)
+                this.diary = updatedDiary
+                updateFavoriteIcon(updatedDiary.favorited)
             }
         }
     }
 
-    // Fungsi untuk update ikon favorit
     private fun updateFavoriteIcon(isFavorited: Boolean) {
         val favoriteIcon = if (isFavorited) R.drawable.baseline_favorite_24 else R.drawable.baseline_favorite_border_24
         binding.heartIcon.setImageResource(favoriteIcon)

@@ -1,6 +1,5 @@
 package com.dicoding.capstone_diy.ui.profile
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.capstone_diy.data.DiaryRepository

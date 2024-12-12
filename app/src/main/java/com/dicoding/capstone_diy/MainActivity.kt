@@ -8,8 +8,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import com.dicoding.capstone_diy.databinding.ActivityMainBinding
 import com.dicoding.capstone_diy.utils.ThemeManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -19,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        ThemeManager.applyTheme(this) // Terapkan tema sebelum onCreate
+        ThemeManager.applyTheme(this)
 
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -29,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
 
-        // Menyembunyikan BottomNavigationView di LoginFragment dan SignUpFragment
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.loginFragment, R.id.signUpFragment -> {
@@ -42,15 +39,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         supportActionBar?.hide()
-
-//        val appBarConfiguration = AppBarConfiguration(
-//            setOf(
-//                R.id.navigation_home, R.id.navigation_statistic, R.id.navigation_profile
-//            )
-//        )
-//        navView.setupWithNavController(navController)
-
-// Listener untuk navigasi manual dengan animasi
         navView.setOnItemSelectedListener { menuItem ->
             val currentDestination = navController.currentDestination?.id
             val targetDestination =
@@ -64,7 +52,6 @@ class MainActivity : AppCompatActivity() {
             if (targetDestination != null && targetDestination != currentDestination) {
                 val navOptions =
                     when {
-                    // Home ke Statistic atau Statistic ke Profile: geser kiri
                     (currentDestination == R.id.navigation_home && targetDestination == R.id.navigation_statistic) ||
                             (currentDestination == R.id.navigation_statistic && targetDestination == R.id.navigation_profile) ||
                                 (currentDestination == R.id.navigation_home && targetDestination == R.id.navigation_profile)-> {
@@ -75,7 +62,6 @@ class MainActivity : AppCompatActivity() {
                             .setPopExitAnim(R.anim.slide_out_right)
                             .build()
                     }
-                    // Statistic ke Home atau Profile ke Statistic: geser kanan
                     (currentDestination == R.id.navigation_statistic && targetDestination == R.id.navigation_home) ||
                             (currentDestination == R.id.navigation_profile && targetDestination == R.id.navigation_statistic) ||
                                 (currentDestination == R.id.navigation_profile && targetDestination == R.id.navigation_home)-> {
@@ -97,22 +83,13 @@ class MainActivity : AppCompatActivity() {
                 false
             }
         }
-
-
-
-        // Pulihkan fragment terakhir jika Activity dimuat ulang
-//        val sharedPref = getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
-//        val lastFragment = sharedPref.getInt("lastFragment", R.id.navigation_home) // Default ke Home
         val sharedPreff = getSharedPreferences("user", Context.MODE_PRIVATE)
         val isLoggedIn = sharedPreff.getBoolean("is_logged_in", false)
         Log.d("MainActivity", "isLoggedIn: $isLoggedIn")
 
 
-        // Navigasikan ke fragment terakhir
         if (savedInstanceState == null) {
             if (isLoggedIn) {
-//                navController.navigate(lastFragment)
-//                navView.menu.findItem(lastFragment).isChecked = true
                 navController.navigate(R.id.navigation_home)
             } else {
                 navController.navigate(R.id.loginFragment)
@@ -124,7 +101,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        // Terapkan tema ulang jika terjadi perubahan konfigurasi
         ThemeManager.applyTheme(this)
     }
 }

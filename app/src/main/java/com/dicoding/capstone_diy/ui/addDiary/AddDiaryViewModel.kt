@@ -5,13 +5,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dicoding.capstone_diy.api.RetrofitInstance
-import com.dicoding.capstone_diy.data.DiaryRepository
 import com.dicoding.capstone_diy.data.DiaryRequest
 import kotlinx.coroutines.launch
 
 class AddDiaryViewModel(private val context: Context) : ViewModel() {
 
-    // Mengambil token dari SharedPreferences
     private fun getToken(): String? {
         val sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("firebase_id_token", null)
@@ -23,7 +21,6 @@ class AddDiaryViewModel(private val context: Context) : ViewModel() {
         return token
     }
 
-    // Fungsi untuk menambahkan diary
     fun insertDiary(title: String, story: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
         val token = getToken()
         if (token == null) {
@@ -41,7 +38,6 @@ class AddDiaryViewModel(private val context: Context) : ViewModel() {
                 if (response.isSuccessful) {
                     onSuccess()
                 } else {
-                    // Log the response code and error body
                     Log.e("AddDiaryViewModel", "API Error: ${response.code()} ${response.message()}")
                     response.errorBody()?.let { errorBody ->
                         Log.e("AddDiaryViewModel", "Error Body: ${errorBody.string()}")

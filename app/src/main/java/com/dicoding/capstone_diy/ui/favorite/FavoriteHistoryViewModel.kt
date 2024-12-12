@@ -9,12 +9,11 @@ import kotlinx.coroutines.launch
 
 class FavoriteHistoryViewModel(private val repository: DiaryRepository) : ViewModel() {
 
-    // Menggunakan Flow untuk mendapatkan daftar favorit
     val favorites: Flow<List<Diary>> = repository.getFavoriteDiaries()
 
     fun updateDiary(diary: Diary) {
         viewModelScope.launch {
-            repository.update(diary) // Memperbarui entri favorit/non-favorit
+            repository.update(diary)
         }
     }
 }

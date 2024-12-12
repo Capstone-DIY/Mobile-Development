@@ -15,7 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="40dp"/>
 
-    <!-- Logo DIY -->
     <TextView
         android:id="@+id/tvLogo"
         android:layout_width="wrap_content"
@@ -42,7 +41,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="2dp" />
 
-    <!-- Email Field -->
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="0dp"
@@ -73,17 +71,6 @@
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp" />
-
-    <!--<CheckBox
-        android:id="@+id/cbRememberMe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Remember me"
-        android:minHeight="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etPassword" />-->
 
     <Button
         android:id="@+id/btnLogin"

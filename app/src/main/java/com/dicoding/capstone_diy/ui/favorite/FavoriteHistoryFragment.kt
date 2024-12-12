@@ -10,10 +10,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.capstone_diy.R
+import com.dicoding.capstone_diy.data.DiaryDatabase
 import com.dicoding.capstone_diy.data.DiaryRepository
 import com.dicoding.capstone_diy.databinding.FragmentFavoriteHistoryBinding
 import com.dicoding.capstone_diy.ui.home.DiaryAdapter
-import com.dicoding.capstone_diy.data.DiaryDatabase
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -31,7 +31,6 @@ class FavoriteHistoryFragment : Fragment() {
     ): View {
         _binding = FragmentFavoriteHistoryBinding.inflate(inflater, container, false)
 
-        // Inisialisasi repository dan ViewModel
         val diaryDao = DiaryDatabase.getDatabase(requireContext()).diaryDao()
         val repository = DiaryRepository(diaryDao)
         val factory = FavoriteHistoryViewModelFactory(repository)
@@ -45,7 +44,6 @@ class FavoriteHistoryFragment : Fragment() {
 
         requireActivity().findViewById<View>(R.id.nav_view).visibility = View.GONE
 
-        // Inisialisasi Adapter
         diaryAdapter = DiaryAdapter(
             onItemClick = { diary ->
                 val bundle = Bundle().apply {
@@ -58,13 +56,11 @@ class FavoriteHistoryFragment : Fragment() {
             }
         )
 
-        // Atur RecyclerView
         binding.rvFavoriteHistory.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = diaryAdapter
         }
 
-        // Observe data favorit dari ViewModel menggunakan Flow
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.favorites.collectLatest { favorites ->
                 if (favorites.isNotEmpty()) {
@@ -78,7 +74,6 @@ class FavoriteHistoryFragment : Fragment() {
             }
         }
 
-        // Tombol Kembali
         binding.btnBackFavorite.setOnClickListener {
             requireActivity().onBackPressed()
         }
