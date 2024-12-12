@@ -52,7 +52,7 @@ class DiaryRepository(private val diaryDao: DiaryDao) {
                         diaryDao.insertDiary(diary)
                     } else {
                         if (existingDiary != diary) {
-                            diaryDao.updateDiary(diary)
+                            Log.d("Diary Status", "Diary with ID ${diary.id} sudah ada dalam database")
                         }
                     }
                 }

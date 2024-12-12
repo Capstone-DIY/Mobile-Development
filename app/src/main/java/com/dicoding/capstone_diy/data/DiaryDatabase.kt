@@ -18,14 +18,12 @@ abstract class DiaryDatabase : RoomDatabase() {
 
         val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // Tambahkan kolom baru ke tabel Diary
                 database.execSQL("ALTER TABLE diary_table ADD COLUMN favorited INTEGER NOT NULL DEFAULT 0")
             }
         }
 
         val MIGRATION_2_3 = object : Migration(2, 3) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // Add new columns for emotion, response, and favorited
                 database.execSQL("ALTER TABLE diary_table ADD COLUMN emotion TEXT")
                 database.execSQL("ALTER TABLE diary_table ADD COLUMN response TEXT")
             }
