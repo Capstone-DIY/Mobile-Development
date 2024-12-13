@@ -3,14 +3,17 @@ package com.dicoding.capstone_diy.ui.editprofile
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.dicoding.capstone_diy.R
-import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
 
 class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
 
@@ -23,11 +26,11 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     private lateinit var genderSpinner: Spinner
     private lateinit var updateButton: Button
     private lateinit var cancelButton: Button
+    private lateinit var backButton: ImageView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Inisialisasi Views
         nameEditText = view.findViewById(R.id.etName)
         usernameEditText = view.findViewById(R.id.etUsername)
         dateEditText = view.findViewById(R.id.etDate)
@@ -35,23 +38,26 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         genderSpinner = view.findViewById(R.id.spinnerGender)
         updateButton = view.findViewById(R.id.btnUpdate)
         cancelButton = view.findViewById(R.id.btnCancel)
+        backButton = view.findViewById(R.id.btnBack)
 
-        // Listener tombol cancel
+        requireActivity().findViewById<View>(R.id.nav_view).visibility = View.GONE
+
         cancelButton.setOnClickListener {
             findNavController().popBackStack()
         }
 
-        // Listener untuk DatePicker
+        backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         dateEditText.setOnClickListener {
             showDatePickerDialog()
         }
 
-        // Listener tombol update
         updateButton.setOnClickListener {
             updateProfile()
         }
 
-        // Observasi hasil update
         editProfileViewModel.profileUpdateResult.observe(viewLifecycleOwner, Observer { isSuccess ->
             if (isSuccess) {
                 Toast.makeText(context, "Profile updated successfully", Toast.LENGTH_SHORT).show()
@@ -59,7 +65,6 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
             }
         })
 
-        // Observasi error
         editProfileViewModel.errorMessage.observe(viewLifecycleOwner, Observer { error ->
             error?.let {
                 Toast.makeText(context, "Error: $it", Toast.LENGTH_SHORT).show()
@@ -70,15 +75,14 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     private fun showDatePickerDialog() {
         val calendar = Calendar.getInstance()
 
-        // Parse tanggal saat ini di EditText jika ada
         val currentDob = dateEditText.text.toString()
         if (currentDob.isNotEmpty()) {
             val dateParts = currentDob.split("-")
             if (dateParts.size == 3) {
                 calendar.set(
-                    dateParts[0].toInt(), // Year
-                    dateParts[1].toInt() - 1, // Month (0-based)
-                    dateParts[2].toInt() // Day
+                    dateParts[0].toInt(),
+                    dateParts[1].toInt() - 1,
+                    dateParts[2].toInt()
                 )
             }
         }
@@ -114,7 +118,6 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
             return
         }
 
-        // Kirim data ke ViewModel untuk update
         editProfileViewModel.updateUserProfile(requireContext(), name, username, dob, contact, gender)
     }
 }

@@ -12,24 +12,20 @@
         android:theme="@style/Theme.CapstoneDIY"
         tools:targetApi="31">
 
-        <!-- Splash Screen -->
         <activity
             android:name=".SplashActivity"
             android:exported="true">
-            <!-- SplashActivity menjadi aktivitas awal -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- Onboarding Activity -->
         <activity
             android:name=".OnboardingActivity"
             android:exported="false"
             android:label="@string/onboarding_title" />
 
-        <!-- Main Activity (atau Login Activity) -->
         <activity
             android:name=".MainActivity"
             android:configChanges="uiMode|screenSize|orientation"

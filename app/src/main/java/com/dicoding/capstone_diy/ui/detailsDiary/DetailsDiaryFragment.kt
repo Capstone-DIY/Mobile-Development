@@ -1,6 +1,8 @@
 package com.dicoding.capstone_diy.ui.detailsDiary
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,10 +28,11 @@ class DetailsDiaryFragment : Fragment() {
     private val detailsDiaryViewModel: DetailsDiaryViewModel by viewModels {
         val diaryDao = DiaryDatabase.getDatabase(requireContext()).diaryDao()
         val repository = DiaryRepository(diaryDao)
-        DetailsDiaryViewModelFactory(repository)
+        DetailsDiaryViewModelFactory(repository, requireContext())
     }
 
-    private var diary: Diary? = null // Simpan diary sebagai properti
+
+    private var diary: Diary? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,47 +40,53 @@ class DetailsDiaryFragment : Fragment() {
     ): View {
         _binding = FragmentDetailsDiaryBinding.inflate(inflater, container, false)
 
-        // Ambil data Diary dari Bundle
         diary = arguments?.let {
             BundleCompat.getParcelable(it, "diary", Diary::class.java)
         }
 
-        // Set data Diary ke UI
         diary?.let { updateUI(it) }
 
-        // Set OnClickListener untuk tombol back
         binding.backIcon.setOnClickListener {
             findNavController().navigateUp()
         }
 
         binding.btnDelete.setOnClickListener {
             diary?.let { diary ->
-                detailsDiaryViewModel.deleteDiary(diary) // Panggil fungsi delete di ViewModel
-                findNavController().navigateUp() // Kembali ke halaman sebelumnya setelah delete
+                detailsDiaryViewModel.deleteDiary(diary)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    findNavController().navigateUp()
+                }, 2000)
             }
         }
 
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().findViewById<View>(R.id.nav_view).visibility = View.GONE
+    }
+
     private fun updateUI(diary: Diary) {
         binding.dateText.text = formatTimestamp(diary.date)
         binding.titleText.text = diary.title
         binding.descriptionText.text = diary.description
+        binding.tvLabelText.text = diary.emotion
+        binding.responseText.text = diary.response
 
         updateFavoriteIcon(diary.favorited)
 
         binding.heartIcon.setOnClickListener {
             val updatedDiary = this.diary?.copy(favorited = !(this.diary?.favorited ?: false))
             if (updatedDiary != null) {
-                detailsDiaryViewModel.updateDiary(updatedDiary) // Perbarui di database
-                this.diary = updatedDiary // Simpan perubahan ke properti lokal
-                updateFavoriteIcon(updatedDiary.favorited) // Perbarui ikon
+                detailsDiaryViewModel.updateDiary(updatedDiary)
+                this.diary = updatedDiary
+                updateFavoriteIcon(updatedDiary.favorited)
             }
         }
     }
 
-    // Fungsi untuk update ikon favorit
     private fun updateFavoriteIcon(isFavorited: Boolean) {
         val favoriteIcon = if (isFavorited) R.drawable.baseline_favorite_24 else R.drawable.baseline_favorite_border_24
         binding.heartIcon.setImageResource(favoriteIcon)

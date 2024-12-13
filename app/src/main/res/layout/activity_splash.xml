@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
-    <!-- Logo atau Gambar Splash -->
     <ImageView
         android:id="@+id/splashLogo"
         android:layout_width="100dp"

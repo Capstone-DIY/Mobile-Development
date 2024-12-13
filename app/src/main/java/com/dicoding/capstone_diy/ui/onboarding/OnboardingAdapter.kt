@@ -1,11 +1,8 @@
 package com.dicoding.capstone_diy.ui.onboarding
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.dicoding.capstone_diy.R
 import com.dicoding.capstone_diy.databinding.ItemOnboardingBinding
 
 class OnboardingAdapter(private val items: List<OnboardingItem>) :

@@ -1,30 +1,55 @@
 package com.dicoding.capstone_diy.ui.addDiary
 
+import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dicoding.capstone_diy.data.Diary
-import com.dicoding.capstone_diy.data.DiaryRepository
+import com.dicoding.capstone_diy.api.RetrofitInstance
+import com.dicoding.capstone_diy.data.DiaryRequest
 import kotlinx.coroutines.launch
 
+class AddDiaryViewModel(private val context: Context) : ViewModel() {
 
-class AddDiaryViewModel (private val repository: DiaryRepository): ViewModel() {
-    // Data diary internal sebagai MutableLiveData
-    private val _diaries = MutableLiveData<List<Diary>>(mutableListOf())
-    val diaries: LiveData<List<Diary>> get() = _diaries
+    private fun getToken(): String? {
+        val sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
+        val token = sharedPreferences.getString("firebase_id_token", null)
+        if (token != null) {
+            Log.d("AddDiaryViewModel", "Token berhasil diambil: $token")
+        } else {
+            Log.e("AddDiaryViewModel", "Token tidak ditemukan")
+        }
+        return token
+    }
 
-    // Menambahkan diary baru
-    fun insertDiary(diary: Diary) {
+    fun insertDiary(title: String, story: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        val token = getToken()
+        if (token == null) {
+            onError("Token not found. Please log in again.")
+            Log.e("AddDiaryViewModel", "Token is null")
+            return
+        }
+
+        val diaryRequest = DiaryRequest(title = title, story = story)
+
         viewModelScope.launch {
             try {
-                repository.insert(diary)
-                Log.d("AddDiaryViewModel", "Diary inserted: $diary")
+                // Send the API request with the token in the header
+                val response = RetrofitInstance.apiService.createDiary("Bearer $token", diaryRequest)
+                if (response.isSuccessful) {
+                    onSuccess()
+                } else {
+                    Log.e("AddDiaryViewModel", "API Error: ${response.code()} ${response.message()}")
+                    response.errorBody()?.let { errorBody ->
+                        Log.e("AddDiaryViewModel", "Error Body: ${errorBody.string()}")
+                    }
+                    onError("Error: ${response.message()}")
+                }
             } catch (e: Exception) {
-                Log.e("AddDiaryViewModel", "Error inserting diary: ${e.message}")
+                onError("Failed to insert diary: ${e.localizedMessage}")
+                Log.e("AddDiaryViewModel", "Exception: ${e.localizedMessage}", e)
             }
         }
     }
 
 }
+

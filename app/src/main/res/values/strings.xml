@@ -3,11 +3,9 @@
     <string name="title_home">Home</string>
     <string name="title_statistic">Statistic</string>
     <string name="title_profile">Profile</string>
-  
-    <!-- String untuk Onboarding -->
+
     <string name="onboarding_title">Welcome to Onboarding</string>
     <string name="favorite">Favorite</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="logout">Log Out</string>
@@ -15,7 +13,6 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
-    <!-- Array for gender options -->
     <string-array name="gender_options">
         <item>Male</item>
         <item>Female</item>

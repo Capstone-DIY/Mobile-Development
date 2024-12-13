@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <!-- Add Diary Box -->
     <LinearLayout
         android:id="@+id/addDiaryBox"
         android:layout_width="match_parent"
@@ -40,7 +39,6 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <!-- Emotion Tag -->
     <LinearLayout
         android:id="@+id/emotionTag"
         android:layout_width="wrap_content"
@@ -75,7 +73,6 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Full Page CardView Content -->
     <androidx.cardview.widget.CardView
         android:id="@+id/diaryCard"
         android:layout_width="match_parent"
@@ -154,14 +151,12 @@
             android:orientation="horizontal"
             android:padding="16dp">
 
-            <!-- Text Content Section -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="350dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <!-- Date Text -->
                 <TextView
                     android:id="@+id/dateText"
                     android:layout_width="wrap_content"
@@ -171,7 +166,6 @@
                     android:textColor="#FFFFFF"
                     android:textSize="14sp" />
 
-                <!-- Title Text -->
                 <TextView
                     android:id="@+id/titleText"
                     android:layout_width="wrap_content"
@@ -182,7 +176,6 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <!-- Description Text -->
                 <ScrollView
                     android:layout_width="wrap_content"
                     android:layout_height="310dp">
@@ -199,7 +192,6 @@
                 </ScrollView>
             </LinearLayout>
 
-            <!-- Heart Icon -->
             <ImageView
                 android:id="@+id/heartIcon"
                 android:layout_width="24dp"
@@ -218,7 +210,6 @@
             android:layout_marginRight="40dp"
             android:orientation="vertical">
 
-            <!-- Response Title -->
             <TextView
                 android:id="@+id/responseTitle"
                 android:layout_width="wrap_content"
@@ -230,7 +221,6 @@
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />
 
-            <!-- Response Box -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

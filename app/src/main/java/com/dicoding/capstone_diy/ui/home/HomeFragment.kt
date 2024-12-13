@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,11 +22,10 @@ class HomeFragment : Fragment() {
 
     private lateinit var diaryAdapter: DiaryAdapter
 
-    // Inisialisasi ViewModel dengan factory
     private val homeViewModel: HomeViewModel by viewModels {
         val diaryDao = DiaryDatabase.getDatabase(requireContext()).diaryDao()
         val repository = DiaryRepository(diaryDao)
-        HomeViewModelFactory(repository)
+        HomeViewModelFactory(repository, requireContext())
     }
 
     override fun onCreateView(
@@ -36,10 +34,8 @@ class HomeFragment : Fragment() {
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        // Inisialisasi RecyclerView
         initRecyclerView()
 
-        // Set OnClickListener untuk FAB (Floating Action Button) untuk navigasi ke AddDiaryFragment
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_addDiaryFragment)
         }
@@ -47,8 +43,23 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        homeViewModel.fetchDiariesFromApi()
+        homeViewModel.isTokenExpired.observe(viewLifecycleOwner, Observer { isExpired ->
+            if (isExpired) {
+                Log.e("HomeFragment", "Token expired, navigating to login")
+                findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+            }
+        })
+
+        homeViewModel.apiStatus.observe(viewLifecycleOwner, Observer { status ->
+            Log.d("HomeFragment", "API Status: $status")
+        })
+    }
+
     private fun initRecyclerView() {
-        // Inisialisasi Adapter dengan meneruskan fungsi navigasi ke DetailFragment
         diaryAdapter = DiaryAdapter(
             onItemClick = { diary ->
                 val bundle = Bundle().apply {
@@ -57,31 +68,32 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(R.id.detailsDiaryFragment, bundle)
             },
             onFavoriteClick = { diary ->
-                homeViewModel.updateDiary(diary) // Panggil fungsi di ViewModel
+                homeViewModel.updateDiary(diary)
             }
         )
 
-        // Mengamati perubahan data diaries
         homeViewModel.diaries.observe(viewLifecycleOwner, Observer { diaries ->
             if (diaries.isNotEmpty()) {
-                // Menampilkan RecyclerView
                 binding.recyclerView.visibility = View.VISIBLE
                 diaryAdapter.submitList(diaries)
                 binding.addImage.visibility = View.GONE
                 binding.textHome.visibility = View.GONE
+                Log.d("HomeFragment", "Diaries loaded successfully")
             } else {
-                // Menampilkan placeholder jika data kosong
                 binding.recyclerView.visibility = View.GONE
                 binding.addImage.visibility = View.VISIBLE
                 binding.textHome.visibility = View.VISIBLE
+                Log.d("HomeFragment", "No diaries available")
             }
         })
 
-        // Atur RecyclerView
+        homeViewModel.apiStatus.observe(viewLifecycleOwner, Observer { status ->
+            Log.d("HomeFragment", "API Status: $status")
+        })
+
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             binding.recyclerView.adapter = diaryAdapter
-
         }
     }
 

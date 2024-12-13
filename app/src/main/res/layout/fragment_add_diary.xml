@@ -25,7 +25,7 @@
             android:background="@drawable/baseline_keyboard_backspace_24"
             android:contentDescription="Back"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"/> <!-- Set tint to grey -->
+            android:layout_marginEnd="8dp"/>
 
 
         <TextView
@@ -55,7 +55,6 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="16dp" />
 
-    <!-- Title Label -->
     <TextView
         android:id="@+id/titleLabel"
         android:layout_width="wrap_content"
@@ -67,7 +66,6 @@
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp" />
 
-    <!-- Title Field -->
     <EditText
         android:id="@+id/titleField"
         android:layout_width="0dp"
@@ -83,7 +81,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp" />
 
-    <!-- Story Label -->
     <TextView
         android:id="@+id/storyLabel"
         android:layout_width="wrap_content"
@@ -95,7 +92,6 @@
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp" />
 
-    <!-- Story Field -->
     <EditText
         android:id="@+id/storyField"
         android:layout_width="0dp"
@@ -113,7 +109,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp" />
 
-    <!-- Save Button -->
     <Button
         android:id="@+id/saveButton"
         android:layout_width="250dp"

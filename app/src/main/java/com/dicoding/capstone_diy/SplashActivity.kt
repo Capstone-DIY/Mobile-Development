@@ -19,24 +19,20 @@ class SplashActivity : AppCompatActivity() {
             val sharedPref = getSharedPreferences("user", MODE_PRIVATE)
             val isLoggedIn = sharedPref.getBoolean("is_logged_in", false)
 
-            // Menambahkan log untuk memeriksa status login
             Log.d("SplashActivity", "isLoggedIn: $isLoggedIn")
 
             val onboardingPref = getSharedPreferences("onboarding", MODE_PRIVATE)
             val isOnboardingSeen = onboardingPref.getBoolean("onboarding_seen", false)
 
             val intent = when {
-                // Jika onboarding belum dilihat, arahkan ke OnboardingActivity
                 !isOnboardingSeen -> {
                     Intent(this, OnboardingActivity::class.java)
                 }
-                // Jika sudah login, langsung ke MainActivity yang akan menampilkan HomeFragment
                 isLoggedIn -> {
                     Intent(this, MainActivity::class.java).apply {
                         putExtra("navigateToHome", true)
                     }
                 }
-                // Jika belum login, arahkan ke LoginFragment
                 else -> {
                     Intent(this, MainActivity::class.java).apply {
                         putExtra("navigateToLogin", true)
@@ -46,7 +42,7 @@ class SplashActivity : AppCompatActivity() {
 
             startActivity(intent)
             finish()
-        }, 2000) // Splash screen ditampilkan selama 2 detik
+        }, 2000)
     }
 }
 

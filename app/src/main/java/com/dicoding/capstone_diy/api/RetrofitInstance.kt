@@ -3,7 +3,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    private const val BASE_URL = "https://diy-api-1041228414346.asia-southeast2.run.app/"
+    private const val BASE_URL = "https://diy-api-684424265944.asia-southeast2.run.app/"
 
     val retrofit: Retrofit by lazy {
         Retrofit.Builder()
@@ -16,5 +16,5 @@ object RetrofitInstance {
         retrofit.create(UserApiService::class.java)
     }
 
-//    val apiService: DiaryApiService = retrofit.create(DiaryApiService::class.java)
+    val apiService: DiaryApiService = retrofit.create(DiaryApiService::class.java)
 }

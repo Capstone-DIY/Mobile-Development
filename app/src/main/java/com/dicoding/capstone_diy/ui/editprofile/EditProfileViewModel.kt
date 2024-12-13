@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dicoding.capstone_diy.api.RetrofitInstance
-import com.dicoding.capstone_diy.data.response.UserData
 import kotlinx.coroutines.launch
 
 class EditProfileViewModel : ViewModel() {
@@ -26,7 +25,6 @@ class EditProfileViewModel : ViewModel() {
                     return@launch
                 }
 
-                // Format ulang tanggal agar hanya yyyy-MM-dd
                 val formattedDob = dob.split("T").firstOrNull() ?: dob
 
                 val profileData = mapOf(

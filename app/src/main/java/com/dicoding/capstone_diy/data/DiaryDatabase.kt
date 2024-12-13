@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [Diary::class], version = 2, exportSchema = false)
+@Database(entities = [Diary::class], version = 5, exportSchema = false)
 abstract class DiaryDatabase : RoomDatabase() {
 
     abstract fun diaryDao(): DiaryDao
@@ -18,10 +18,17 @@ abstract class DiaryDatabase : RoomDatabase() {
 
         val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // Tambahkan kolom baru ke tabel Diary
                 database.execSQL("ALTER TABLE diary_table ADD COLUMN favorited INTEGER NOT NULL DEFAULT 0")
             }
         }
+
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE diary_table ADD COLUMN emotion TEXT")
+                database.execSQL("ALTER TABLE diary_table ADD COLUMN response TEXT")
+            }
+        }
+
 
         fun getDatabase(context: Context): DiaryDatabase {
             return INSTANCE ?: synchronized(this) {
@@ -30,7 +37,8 @@ abstract class DiaryDatabase : RoomDatabase() {
                     DiaryDatabase::class.java,
                     "diary_database"
                 )
-                    .addMigrations(MIGRATION_1_2)
+                    .fallbackToDestructiveMigration()
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     .build()
                 INSTANCE = instance
                 instance

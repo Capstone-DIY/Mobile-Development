@@ -32,7 +32,6 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <!-- Quote Section -->
     <LinearLayout
         android:id="@+id/emotionContainer"
         android:layout_width="240dp"
@@ -81,17 +80,16 @@
 
         <TextView
             android:id="@+id/quoteText"
-            android:layout_width="wrap_content"
+            android:layout_width="338dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:text="Tetaplah bernafas! - Jack Kahuna Laggoona"
-            android:textAlignment="center"
+            android:text="Tetaplah bernafas! - Jack Kahoona Lagoona"
+            android:textAlignment="textStart"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />
     </FrameLayout>
 
-    <!-- Chart Header -->
     <TableLayout
         android:id="@+id/chartHeader"
         android:layout_width="match_parent"
@@ -105,7 +103,6 @@
         app:layout_constraintEnd_toEndOf="parent">
     </TableLayout>
 
-    <!-- Bar Chart -->
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/emotionChart"
         android:layout_width="match_parent"

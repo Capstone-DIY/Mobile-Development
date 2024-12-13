@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- ViewPager2 untuk halaman onboarding -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
@@ -13,10 +12,6 @@
         app:layout_constraintBottom_toTopOf="@id/indicatorLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Indicator Circle (Manual) -->
-
-    <!-- Tombol Panah -->
 
     <LinearLayout
         android:id="@+id/indicatorLayout"

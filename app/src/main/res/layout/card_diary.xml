@@ -6,7 +6,6 @@
     android:id="@+id/card_diary"
     android:padding="8dp">
 
-    <!-- Emotion Tag -->
     <LinearLayout
         android:id="@+id/emotionTag"
         android:layout_width="wrap_content"
@@ -39,7 +38,6 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- CardView Content -->
     <androidx.cardview.widget.CardView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/diaryCard"
@@ -64,7 +62,6 @@
             android:padding="16dp"
             android:layout_marginLeft="5dp">
 
-            <!-- Icon Section -->
             <ImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
@@ -73,14 +70,12 @@
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/icon" />
 
-            <!-- Text Content Section -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_weight="1">
 
-                <!-- Date Text -->
                 <TextView
                     android:id="@+id/dateText"
                     android:layout_width="wrap_content"
@@ -90,7 +85,6 @@
                     android:textSize="14sp"
                     android:fontFamily="sans-serif" />
 
-                <!-- Title Text -->
                 <TextView
                     android:id="@+id/titleText"
                     android:layout_width="wrap_content"
@@ -101,7 +95,6 @@
                     android:textSize="16sp"
                     android:fontFamily="sans-serif-medium" />
 
-                <!-- Description Text -->
                 <TextView
                     android:id="@+id/descriptionText"
                     android:layout_width="wrap_content"
@@ -114,7 +107,6 @@
                     android:fontFamily="sans-serif" />
             </LinearLayout>
 
-            <!-- Heart Icon -->
             <ImageView
                 android:id="@+id/heartIcon"
                 android:layout_width="24dp"

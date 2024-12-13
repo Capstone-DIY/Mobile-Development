@@ -43,16 +43,10 @@ class OnboardingActivity : AppCompatActivity() {
         val adapter = OnboardingAdapter(onboardingItems)
         binding.viewPager.adapter = adapter
 
-        // Set drawable panah ke kanan secara eksplisit
         binding.buttonNext.setImageResource(R.drawable.ic_arrow_right)
-
         Log.d("OnboardingActivity", "ButtonNext scaleX: ${binding.buttonNext.scaleX}")
-
-
-        // Atur indicator pertama sebagai aktif
         setIndicator(0)
 
-        // Listener untuk ViewPager2
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
@@ -60,7 +54,6 @@ class OnboardingActivity : AppCompatActivity() {
             }
         })
 
-        // Tombol Next
         binding.buttonNext.setOnClickListener {
             val viewPager = binding.viewPager
             if (viewPager.currentItem < onboardingItems.size - 1) {
@@ -73,9 +66,8 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     private fun setIndicator(position: Int) {
-        // Reset semua indikator ke ukuran kecil (tidak aktif)
-        val smallSize = 20 // Ukuran kecil untuk tidak aktif
-        val largeSize = 25 // Ukuran besar untuk aktif
+        val smallSize = 20
+        val largeSize = 25
 
         val indicators = listOf(
             binding.indicator1,
@@ -88,17 +80,15 @@ class OnboardingActivity : AppCompatActivity() {
             layoutParams.width = smallSize
             layoutParams.height = smallSize
             indicators[i].layoutParams = layoutParams
-            indicators[i].setImageResource(R.drawable.circle_inactive) // Set ke tidak aktif
+            indicators[i].setImageResource(R.drawable.circle_inactive)
         }
 
-        // Perbesar indikator aktif
         val activeIndicator = indicators[position]
         val activeLayoutParams = activeIndicator.layoutParams
         activeLayoutParams.width = largeSize
         activeLayoutParams.height = largeSize
         activeIndicator.layoutParams = activeLayoutParams
-        activeIndicator.setImageResource(R.drawable.circle_active) // Set ke aktif
-
+        activeIndicator.setImageResource(R.drawable.circle_active)
     }
 
 
